@@ -13,7 +13,7 @@ function showHomepageCard() {
 }
 
 function launchSidebar() {
-  const html = HtmlService.createTemplateFromFile('F-sidebar').evaluate()
+  const html = HtmlService.createTemplateFromFile('client/sidebar').evaluate()
     .setTitle('Sidebar')
     .setWidth(300);
   DocumentApp.getUi().showSidebar(html);
