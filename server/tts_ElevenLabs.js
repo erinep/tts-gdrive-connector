@@ -1,5 +1,5 @@
 
-function fetchAudioBase64(text, voice) {
+function el_fetchAudioBase64(text, voice) {
   const apiKey = getApiKeyForUser();
   if (!apiKey) throw new Error ("API key missing");  
   if (!text|| text === '(No text selected)') throw new Error ("No Text selected");
@@ -27,7 +27,7 @@ function fetchAudioBase64(text, voice) {
 }
 
 
-function testElevenLabsUser() {
+function el_testElevenLabsUser() {
   const apiKey = getApiKeyForUser();
   if (!apiKey) throw new Error("API key missing.");
   const res = UrlFetchApp.fetch("https://api.elevenlabs.io/v1/user", {
@@ -42,7 +42,7 @@ function testElevenLabsUser() {
   return summary;
 }
 
-function getVoicesElevenLabs() {
+function el_getVoicesElevenLabs() {
   const apiKey = getApiKeyForUser();
   if (!apiKey) throw new Error("API key missing.");
   const res = UrlFetchApp.fetch("https://api.elevenlabs.io/v2/voices", {

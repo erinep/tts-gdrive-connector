@@ -27,7 +27,7 @@
         document.getElementById('statusCircle').textContent = 'ERROR 🔴';
         showStatus(e.message, true)
       })
-      .testElevenLabsUser();
+      .test_tts_connection();
   }
 
   function getVoices() {
@@ -45,7 +45,7 @@
         showStatus("voices loaded", false);
       })
       .withFailureHandler( e => showStatus(e.message, true))
-      .getVoicesElevenLabs()
+      .getAIVoiceList()
   }
 
   function callTTS() {
