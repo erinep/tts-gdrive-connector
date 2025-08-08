@@ -1,0 +1,113 @@
+<script>
+
+  function saveKey() {
+    const key = document.getElementById('apikey').value.trim();
+    if (!key) {
+      showStatus('Key empty', true);
+      return;
+    }
+    google.script.run
+      .withSuccessHandler(res => {
+        showStatus(res.message+ " sending test request...", !res.success)
+        fetchUserDetails();
+        getVoices();
+      })
+      .withFailureHandler(e => showStatus(e.message, true))
+      .setApiKeyForUser(key);
+  }
+
+  function fetchUserDetails() {
+
+    google.script.run
+      .withSuccessHandler(res => {
+        showStatus(res , false);
+        document.getElementById('statusCircle').textContent = 'VALID 🟢';
+      })
+      .withFailureHandler(e => {
+        document.getElementById('statusCircle').textContent = 'ERROR 🔴';
+        showStatus(e.message, true)
+      })
+      .testElevenLabsUser();
+  }
+
+  function getVoices() {
+    const dropdown  = document.getElementById('voiceList')
+
+    google.script.run
+      .withSuccessHandler( res => {        
+
+        res.voices.forEach(function(voice) {
+          const option = document.createElement('option');
+          option.text = voice.name;
+          option.value = voice.voice_id;
+          dropdown.appendChild(option);
+        });
+        showStatus("voices loaded", false);
+      })
+      .withFailureHandler( e => showStatus(e.message, true))
+      .getVoicesElevenLabs()
+  }
+
+  function callTTS() {
+
+    const text = document.getElementById("selectedBox").innerText;
+    const voice_id = document.getElementById("voiceList").value;
+    const btn = document.getElementById("ttsTriggerBtn")
+    btn.style.backgroundColor = "grey";
+    btn.setAttribute("disabled", "disabled");
+
+    google.script.run
+      .withSuccessHandler( data => {
+        
+        showStatus("audio built", false)
+        const source = document.getElementById("audioSource");
+        const player = document.getElementById("audioPlayer");
+        source.src = `data:${data.contentType};base64,${data.base64}`;
+        player.load();
+        btn.style.backgroundColor = "#4CAF50";
+        btn.removeAttribute("disabled");
+      
+        showStatus("audio loaded. Storing to google drive...", false)
+        google.script.run
+          .withSuccessHandler( msg => showStatus(msg, false))
+          .withFailureHandler( msg => showStatus(msg, true))
+          .audioStorageHandler(data)
+
+      })
+      .withFailureHandler( e => {
+        showStatus(e.message, true);
+        btn.style.backgroundColor = "#4CAF50";
+        btn.removeAttribute("disabled");
+      }).fetchAudioBase64(text, voice_id)
+  }
+
+  function addToCue() {
+    showStatus("Not Implemented", true);
+    return;
+  }
+
+  function showStatus(msg, isError) {
+    const el = document.getElementById('status');
+    el.textContent = msg;
+    el.style.color = isError ? 'red' : 'green';
+  }
+
+  function updateContext() {
+    document.getElementById('selectedBox').innerHTML = '<span class="loading">Loading...</span>';
+    const countEl = document.getElementById('creditCount');
+    const headingEl = document.getElementById('headingName');
+    headingEl.innerText = "..."
+    countEl.innerText = "..."
+
+    google.script.run.withSuccessHandler(function(content) {
+      document.getElementById('selectedBox').innerText = content;
+      countEl.innerText = `${Math.ceil(content.length/2)} (V2 Turbo Model)`;
+    }).getSelectedText();
+
+
+
+  }
+  updateContext();
+  // fetchUserDetails();
+  getVoices();
+</script>
