@@ -14,7 +14,7 @@ function testStoreAudio() {
     base64: sampleBase64,
     contentType: 'audio/mpeg'
   };
-  const fileId = storeAudio(base64Obj, "i-lost-my-glasses.mp3");
+  const fileId =  addBase64ToDrive(base64Obj, "i-lost-my-glasses.mp3");
   Logger.log("Created file ID: " + fileId);
 }
 

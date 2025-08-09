@@ -28,20 +28,13 @@ function getOrCreateAppFolder() {
   
 }
 
-function audioStorageHandler(base64Obj){
-  let msg = "calling audioStorageHandler"
-  try{
-    const filename = getDocFileName() + "_"+ generateFilenameMp3();
-    msg = addBase64ToDrive(base64Obj,filename);
-  } catch (e) {
-      Logger.log("File Naming error: " + e.message + ". using fallback name");
-      msg = addBase64ToDrive(base64Obj)
-  }
-  return msg
+function audioFileName(){
+  const filename = getDocFileName() + "_"+ getTimeString() + ".mp3";
+  return filename
 }
 
 function addBase64ToDrive(base64Obj, filename=null) {
-  if(!filename) filename = generateFilenameMp3();
+  if(!filename) filename = audioFileName();
 
   try {
     const { base64, contentType } = base64Obj;
@@ -52,7 +45,7 @@ function addBase64ToDrive(base64Obj, filename=null) {
     const folder = getOrCreateAppFolder()
     const file = folder.createFile(blob);
     Logger.log(`file ${file} created`);
-    msg = `File saved to '${SERVICE_FOLDER_NAME}' folder in GDrive`;
+    const msg = `File saved to '${SERVICE_FOLDER_NAME}' folder in GDrive`;
     return msg;
 
   } catch (e) {

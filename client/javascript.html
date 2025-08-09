@@ -71,7 +71,7 @@
         google.script.run
           .withSuccessHandler( msg => showStatus(msg, false))
           .withFailureHandler( msg => showStatus(msg, true))
-          .audioStorageHandler(data)
+          .addBase64ToDrive(data)
 
       })
       .withFailureHandler( e => {

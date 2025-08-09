@@ -42,12 +42,10 @@ function toBase64(blob) {
   };
 }
 
-function generateFilenameMp3() {
+function getTimeString() {
   const now = new Date();
   const timezone = Session.getScriptTimeZone(); // Use your script's timezone
-  const timestamp = Utilities.formatDate(now, timezone, 'yyyyMMddHHmmss');
-  const filename = `${timestamp}.mp3`;
-  return filename;
+  return Utilities.formatDate(now, timezone, 'yyyyMMddHHmmss');
 }
 
 function getHeadingText() {
