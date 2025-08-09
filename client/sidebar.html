@@ -10,10 +10,21 @@
     <summary>Text To Speech</summary>
     <button onclick="updateContext()">Update Text</button><br>
     <div id="selectedBox" class="context"><span class="loading">Loading...</span></div>
-    <select id="voiceList"><option value="" disabled selected hidden>Select a voice </option></select>
     <div>Characters: <span style="color:grey" id="charCount"></span></div>
-      <!-- <div>Heading: <span style="color:grey" id="headingName"></span></div> -->
+    <!-- <div>Heading: <span style="color:grey" id="headingName"></span></div> -->
+    
+    <select id="api-selector" onchange="loadTTSService(event)">
+      <option value="eleven_labs">Eleven Labs API</option>
+      <option value="google-tts">Google TTS API</option>
+    </select>
 
+    <select id="accent" class="google-block hidden">
+      <option default value="en-US">American</option>
+      <option value="en-GB">British</option>
+      <option value="en-AU">Australian</option>
+    </select>
+
+    <select id="voiceList"><option value="" disabled selected hidden>Select a voice </option></select>
 
     <div>
       <button id="ttsTriggerBtn" onclick="callTTS()">Build Speech!</button>
@@ -31,27 +42,13 @@
   <details> 
     <summary>API Manager</summary>
 
-    <select id="api-selector" onchange="loadTTSService(event)">
-      <option value="eleven_labs">Eleven Labs API</option>
-      <option value="google-tts">Google TTS API</option>
-    </select>
-
-    <div class="google-block hidden">
-      <p style="color:grey; font-family: italic">Input a Google token with access to <i>Cloud Text-to-Speech API</i></p>
-
-    </div>
-    <div class="el-block hidden">
-      <p style="color:grey; font-family: italic">Input your ElevenLabs API Token here. Permissions: <i>Text to Speech, User (read), Voices (read)</i></p>
-    </div>
+    <p class="google-block hidden" style="color:grey; font-family: italic">Input a Google token with access to <i>Cloud Text-to-Speech API</i></p>
+    <p class="el-block hidden" style="color:grey; font-family: italic">Input your ElevenLabs API Token here. Permissions: <i>Text to Speech, User (read), Voices (read)</i></p>
 
     <div>
       <button type="button" onclick="saveKey()">Update Key</button>
-      <button type="button" onclick="fetchUserDetails()">Test</button>
     </div>
     <textarea id="apikey" type="password" placeholder="update your key" style="width:100%"></textarea><br />
-    <div id="userDetails">
-      <p>API KEY: <span id="statusCircle" value="untested" style="color:grey;"/> </p>
-    </div>
   </details>
   </div>
   <div id="status"></div>

@@ -40,7 +40,7 @@
         res.voices.forEach(function(voice) {
           const option = document.createElement('option');
           option.text = voice?.name || voice;
-          option.value = voice?.voice_id || voice;
+          option.value = voice?.id || voice;
           dropdown.appendChild(option);
         });
         showStatus(res.message, false);
