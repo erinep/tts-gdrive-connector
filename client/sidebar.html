@@ -13,18 +13,33 @@
     <div>Characters: <span style="color:grey" id="charCount"></span></div>
     <!-- <div>Heading: <span style="color:grey" id="headingName"></span></div> -->
     
-    <select id="api-selector" onchange="loadTTSService(event)">
-      <option value="eleven_labs">Eleven Labs API</option>
-      <option value="google-tts">Google TTS API</option>
-    </select>
+    <div class="form-row" >
+      <label>TTS Service:</label>  
+      <select id="api-selector" onchange="loadTTSService(event)">
+        <option value="eleven_labs">Eleven Labs API</option>
+        <option value="google-tts">Google TTS API</option>
+      </select>
+    </div>
 
-    <select id="accent" class="google-block hidden">
-      <option default value="en-US">American</option>
-      <option value="en-GB">British</option>
-      <option value="en-AU">Australian</option>
-    </select>
+    <div class="form-row google-block hidden">
+      <label>Accent:</label>
+      <select id="accent">
+        <option default value="en-US">American</option>
+        <option value="en-GB">British</option>
+        <option value="en-AU">Australian</option>
+      </select>
+    </div>
 
-    <select id="voiceList"><option value="" disabled selected hidden>Select a voice </option></select>
+
+    <div class="form-row google-block hidden">
+      <label for="readingSpeed">Reading speed:</label>
+      <input id="readingSpeed" style="width: 60px" value="1" type="number" min="0.5" max="2" step="0.05">
+    </div>
+
+    <div class="form-row">
+      <label>Voice:</label>
+      <select id="voiceList"><option value="" disabled selected hidden>Select a voice </option></select>
+    </div>
 
     <div>
       <button id="ttsTriggerBtn" onclick="callTTS()">Build Speech!</button>
