@@ -32,6 +32,7 @@
 
   function getVoices() {
     const dropdown  = document.getElementById('voiceList')
+    dropdown.innerHTML = null;
 
     google.script.run
       .withSuccessHandler( res => {        
@@ -92,11 +93,50 @@
     el.style.color = isError ? 'red' : 'green';
   }
 
+  function loadTTSService(e) {
+    const value = e.target.value;
+
+    // Load Menu with perset Value if none were given
+    if (!value) {
+      google.script.run
+      .withFailureHandler(e => showStatus(e.message, true))
+      .withSuccessHandler(oldValue => {
+        controllerPageUpdate(oldValue);
+      }).getCurrentService();
+    } else {
+      // Load Menu with the selected Value
+      google.script.run
+      .withSuccessHandler( () => {
+        controllerPageUpdate(value);
+      }).withFailureHandler( er => showStatus(er.message , true))
+      .setCurrentService(value);
+    }
+  }
+
+function controllerPageUpdate (value ){
+  const googleElement = document.getElementById('google-block');
+   const elevenElement = document.getElementById('el-block');
+
+  // Update Voice list based on current service
+  getVoices();
+
+  // update menu items
+  if(value === "1") {
+    googleElement.setAttribute('hidden', 'hidden');
+    elevenElement.removeAttribute('hidden');
+  } else if (value === "2") {
+    elevenElement.setAttribute('hidden', 'hidden');
+    googleElement.removeAttribute('hidden'); 
+  } else {
+    showStatus("service ID not found", true);
+  }
+}
+
   function updateContext() {
     document.getElementById('selectedBox').innerHTML = '<span class="loading">Loading...</span>';
     const countEl = document.getElementById('creditCount');
-    const headingEl = document.getElementById('headingName');
-    headingEl.innerText = "..."
+    // const headingEl = document.getElementById('headingName');
+    // headingEl.innerText = "..."
     countEl.innerText = "..."
 
     google.script.run.withSuccessHandler(function(content) {
@@ -107,7 +147,6 @@
 
 
   }
+  loadTTSService();
   updateContext();
-  // fetchUserDetails();
-  getVoices();
 </script>

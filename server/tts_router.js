@@ -1,4 +1,14 @@
-const CURRENT_SERVICE = "google"
+function getCurrentService() {
+  let service = PropertiesService.getUserProperties().getProperty('current-service');
+  if (!service) service = "google-tts"; //fallback
+  return service
+}
+
+function setCurrentService(value) {
+  if (value === "1") PropertiesService.getUserProperties().setProperty('current-service', 'eleven_labs');
+  else if (value === "2") PropertiesService.getUserProperties().setProperty('current-service', 'google-tts');
+  else throw new Error("service id '" + value + "' not found.");
+}
 
 function fetchAudioBase64(text, voice) {
   const apiKey = getApiKeyForUser();
@@ -7,31 +17,34 @@ function fetchAudioBase64(text, voice) {
   if (!voice) throw new Error ("No Voice Selected");
   if (text.length > 1000) throw new Error ("Text too long");
 
-  if (CURRENT_SERVICE === "google") {
+  let serve = getCurrentService();
+  if (serve === "google-tts") {
     return g_callTextToSpeech(text, voice, "en-US");
-  } else if (CURRENT_SERVICE === "eleven_labs"){
+  } else if (serve === "eleven_labs"){
     return el_callTextToSpeech(text, voice);
   } else {
-    throw new Error("CURRENT_SERIVCE, " + CURRENT_SERVICE + ", not found");
+    throw new Error("CURRENT_SERIVCE '" + serve + "' not found");
   }
 }
 
 function test_tts_connection() {
-  if (CURRENT_SERVICE === "google") {
+  let serve = getCurrentService();
+  if (serve === "google-tts") {
     return g_testConnection();
-  } else if (CURRENT_SERVICE === "eleven_labs"){
+  } else if (serve === "eleven_labs"){
     return el_testElevenLabsUser();
   } else {
-    throw new Error("CURRENT_SERIVCE, " + CURRENT_SERVICE + ", not found");
+    throw new Error("CURRENT_SERIVCE, " + serve + ", not found");
   }
 }
 
 function getAIVoiceList() {
-  if (CURRENT_SERVICE === "google") {
+  let serve = getCurrentService();
+  if (serve === "google-tts") {
     return g_getVoices();
-  } else if (CURRENT_SERVICE === "eleven_labs"){
+  } else if (serve === "eleven_labs"){
     return el_getVoicesElevenLabs();
   } else {
-    throw new Error("CURRENT_SERIVCE, " + CURRENT_SERVICE + ", not found");
+    throw new Error("CURRENT_SERIVCE, " + serve + ", not found");
   }
 }
