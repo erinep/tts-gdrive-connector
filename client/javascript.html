@@ -9,26 +9,13 @@
     google.script.run
       .withSuccessHandler(res => {
         showStatus(res.message+ " sending test request...", !res.success)
-        fetchUserDetails();
         getVoices();
       })
       .withFailureHandler(e => showStatus(e.message, true))
       .setApiKeyForUser(key);
   }
 
-  function fetchUserDetails() {
 
-    google.script.run
-      .withSuccessHandler(res => {
-        showStatus(res , false);
-        document.getElementById('statusCircle').textContent = 'VALID 🟢';
-      })
-      .withFailureHandler(e => {
-        document.getElementById('statusCircle').textContent = 'ERROR 🔴';
-        showStatus(e.message, true)
-      })
-      .test_tts_connection();
-  }
 
   function getVoices() {
     const dropdown  = document.getElementById('voiceList')
