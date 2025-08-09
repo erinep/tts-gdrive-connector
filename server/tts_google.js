@@ -8,7 +8,7 @@ function g_testConnection() {
   throw new Error("not implemented");
 }
 
-function g_callTextToSpeech(text, voiceName, languageCode) {
+function g_callTextToSpeech(text, voiceName, languageCode, speed) {
   const apiKey = getApiKeyForUser();
   const url = "https://texttospeech.googleapis.com/v1beta1/text:synthesize?key="+apiKey;
 
@@ -18,9 +18,7 @@ function g_callTextToSpeech(text, voiceName, languageCode) {
     payload: JSON.stringify({
       "audioConfig": {
       "audioEncoding": "LINEAR16",
-      "effectsProfileId": [
-        "headphone-class-device"
-      ],
+      "speakingRate": speed
       },
       "input": {
         "text": text

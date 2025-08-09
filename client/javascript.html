@@ -54,9 +54,12 @@
     const text = document.getElementById("selectedBox").innerText;
     const voice_id = document.getElementById("voiceList").value;
     const locale = document.getElementById("accent")?.value;
+    const speed = document.getElementById("readingSpeedInput")?.value;
     const btn = document.getElementById("ttsTriggerBtn")
     btn.style.backgroundColor = "grey";
     btn.setAttribute("disabled", "disabled");
+
+    console.log(text);
 
     google.script.run
       .withSuccessHandler( data => {
@@ -80,7 +83,7 @@
         showStatus(e.message, true);
         btn.style.backgroundColor = "#4CAF50";
         btn.removeAttribute("disabled");
-      }).fetchAudioBase64(text, voice_id, locale)
+      }).fetchAudioBase64(text, voice_id, locale, speed);
   }
 
   function addToCue() {

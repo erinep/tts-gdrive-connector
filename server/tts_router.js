@@ -10,7 +10,7 @@ function setCurrentService(value) {
   else throw new Error("service id '" + value + "' not found.");
 }
 
-function fetchAudioBase64(text, voice, locale) {
+function fetchAudioBase64(text, voice, locale, speed) {
   const apiKey = getApiKeyForUser();
   if (!apiKey) throw new Error ("API key missing");  
   if (!text|| text === '(No text selected)') throw new Error ("No Text selected");
@@ -19,7 +19,7 @@ function fetchAudioBase64(text, voice, locale) {
 
   let serve = getCurrentService();
   if (serve === "google-tts") {
-    return g_callTextToSpeech(text, voice, locale);
+    return g_callTextToSpeech(text, voice, locale, speed);
   } else if (serve === "eleven_labs"){
     return el_callTextToSpeech(text, voice);
   } else {
