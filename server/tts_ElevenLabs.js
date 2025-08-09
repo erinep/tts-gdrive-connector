@@ -31,7 +31,7 @@ function el_testElevenLabsUser() {
   const apiKey = getApiKeyForUser();
   if (!apiKey) throw new Error("API key missing.");
   const res = UrlFetchApp.fetch("https://api.elevenlabs.io/v1/user", {
-    method: "GET",
+    method: "get",
     headers: {"xi-api-key": apiKey},
   });
   if (res.getResponseCode() !== 200) { throw new Error ("HTTP ERROR: " + res.getContentText()); }
@@ -46,7 +46,7 @@ function el_getVoicesElevenLabs() {
   const apiKey = getApiKeyForUser();
   if (!apiKey) throw new Error("API key missing.");
   const res = UrlFetchApp.fetch("https://api.elevenlabs.io/v2/voices", {
-    method: "GET",
+    method: "get",
     headers: {"xi-api-key": apiKey},
   });
   if (res.getResponseCode() !== 200) { throw new Error("HTTP ERROR: " + res.getContentText()); }
