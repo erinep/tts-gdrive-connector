@@ -53,6 +53,7 @@
 
     const text = document.getElementById("selectedBox").innerText;
     const voice_id = document.getElementById("voiceList").value;
+    const locale = document.getElementById("accent")?.value;
     const btn = document.getElementById("ttsTriggerBtn")
     btn.style.backgroundColor = "grey";
     btn.setAttribute("disabled", "disabled");
@@ -79,7 +80,7 @@
         showStatus(e.message, true);
         btn.style.backgroundColor = "#4CAF50";
         btn.removeAttribute("disabled");
-      }).fetchAudioBase64(text, voice_id)
+      }).fetchAudioBase64(text, voice_id, locale)
   }
 
   function addToCue() {
@@ -115,7 +116,9 @@
 
 function controllerPageUpdate (value ){
   const googleElements = document.querySelectorAll('.google-block');
-   const elevenElements = document.querySelectorAll('.el-block');
+  const elevenElements = document.querySelectorAll('.el-block');
+  const selector = document.getElementById("api-selector");
+  selector.value = value;
 
   // Update Voice list based on current service
   getVoices();
