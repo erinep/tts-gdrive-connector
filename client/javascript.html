@@ -38,8 +38,8 @@
 
         res.voices.forEach(function(voice) {
           const option = document.createElement('option');
-          option.text = voice.name;
-          option.value = voice.voice_id;
+          option.text = voice?.name || voice;
+          option.value = voice?.voice_id || voice;
           dropdown.appendChild(option);
         });
         showStatus("voices loaded", false);

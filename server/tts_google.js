@@ -1,4 +1,4 @@
-const google_voices = ["Achernar","Achird","Algenib","Algieba","Alnilam","Aoede","Autonoe","Callirrhoe","Charon","Despina","Enceladus","Erinome","Fenrir","Gacrux","Iapetus","Kore","Laomedeia","Leda","Orus","Puck","Pulcherrima","Rasalgethi","Sadachbia","Sadaltager","Schedar","Sulafat","Umbriel","Vindemiatrix","Zephyr","Zubenelgenubi"]
+const google_voices = {voices: ["Achernar","Achird","Algenib","Algieba","Alnilam","Aoede","Autonoe","Callirrhoe","Charon","Despina","Enceladus","Erinome","Fenrir","Gacrux","Iapetus","Kore","Laomedeia","Leda","Orus","Puck","Pulcherrima","Rasalgethi","Sadachbia","Sadaltager","Schedar","Sulafat","Umbriel","Vindemiatrix","Zephyr","Zubenelgenubi"]};
 
 function g_getVoices() {
   return google_voices;
@@ -38,6 +38,14 @@ function g_callTextToSpeech(text, voiceName, languageCode) {
     Logger.log(content);
     throw new Error ("HTTP ERROR: " + content );
   }
-  const blob = res.getBlob();
-  return toBase64Obj(blob);
+
+  try{
+    return {
+      "base64": JSON.parse(res).audioContent,
+      "contentType": "audio/wav"
+    }
+  } catch(e) {
+    Logger.log(res)
+    throw new Error(e.message)
+  }
 }
