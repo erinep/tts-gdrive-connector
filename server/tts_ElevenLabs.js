@@ -1,10 +1,6 @@
 
-function el_fetchAudioBase64(text, voice) {
+function el_callTextToSpeech(text, voice) {
   const apiKey = getApiKeyForUser();
-  if (!apiKey) throw new Error ("API key missing");  
-  if (!text|| text === '(No text selected)') throw new Error ("No Text selected");
-  if (!voice) throw new Error ("No Voice Selected");
-  if (text.length > 1000) throw new Error ("Text too long");
   const payload = {
     "text": text,
     "model_id": "eleven_turbo_v2",
@@ -18,12 +14,12 @@ function el_fetchAudioBase64(text, voice) {
   });
   if (res.getResponseCode() !== 200){
     const content = res.getContentText()
-    Logger.log('error in tts server call...');
+    Logger.log('failed el_callTextToSpeech...');
     Logger.log(content)
     throw new Error ("HTTP ERROR: " + content );
   }
   const blob = res.getBlob();
-  return toBase64(blob);
+  return toBase64Obj(blob);
 }
 
 

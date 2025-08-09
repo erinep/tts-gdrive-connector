@@ -29,7 +29,7 @@ function getOrCreateAppFolder() {
 }
 
 function audioFileName(){
-  const filename = getDocFileName() + "_"+ getTimeString() + ".mp3";
+  const filename = getDocFileName() + "_"+ SERVICE_NAME + "_" + getTimeString() + ".mp3";
   return filename
 }
 

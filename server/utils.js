@@ -31,7 +31,7 @@ function include(filename) {
       .getContent();
 }
 
-function toBase64(blob) {
+function toBase64Obj(blob) {
   if (blob.getContentType() !== "audio/mpeg") throw new Error ("CONTENT TYPE ERROR: "+ res.getContentText())
   
   const base64 = Utilities.base64Encode(blob.getBytes());

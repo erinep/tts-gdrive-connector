@@ -10,7 +10,8 @@
     "https://www.googleapis.com/auth/drive"
   ],
   "urlFetchWhitelist": [
-    "https://api.elevenlabs.io/"
+    "https://api.elevenlabs.io/",
+    "https://texttospeech.googleapis.com/"
   ],
   "addOns": {
     "common": {
