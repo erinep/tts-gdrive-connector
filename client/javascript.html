@@ -43,7 +43,7 @@
           option.value = voice?.voice_id || voice;
           dropdown.appendChild(option);
         });
-        showStatus("voices loaded", false);
+        showStatus(res.message, false);
       })
       .withFailureHandler( e => showStatus(e.message, true))
       .getAIVoiceList()
@@ -94,7 +94,7 @@
   }
 
   function loadTTSService(e) {
-    const value = e.target.value;
+    const value = e?.target?.value;
 
     // Load Menu with perset Value if none were given
     if (!value) {
@@ -114,34 +114,34 @@
   }
 
 function controllerPageUpdate (value ){
-  const googleElement = document.getElementById('google-block');
-   const elevenElement = document.getElementById('el-block');
+  const googleElements = document.querySelectorAll('.google-block');
+   const elevenElements = document.querySelectorAll('.el-block');
 
   // Update Voice list based on current service
   getVoices();
 
   // update menu items
-  if(value === "1") {
-    googleElement.setAttribute('hidden', 'hidden');
-    elevenElement.removeAttribute('hidden');
-  } else if (value === "2") {
-    elevenElement.setAttribute('hidden', 'hidden');
-    googleElement.removeAttribute('hidden'); 
+  if(value === "eleven_labs") {
+    googleElements.forEach(el => el.classList.add('hidden'));
+    elevenElements.forEach(el => el.classList.remove('hidden'));
+  } else if (value === "google-tts") {
+    elevenElements.forEach(el => el.classList.add('hidden'));
+    googleElements.forEach(el => el.classList.remove('hidden'));
   } else {
-    showStatus("service ID not found", true);
+    showStatus("service ID not found: "+ value, true);
   }
 }
 
   function updateContext() {
     document.getElementById('selectedBox').innerHTML = '<span class="loading">Loading...</span>';
-    const countEl = document.getElementById('creditCount');
+    const countEl = document.getElementById('charCount');
     // const headingEl = document.getElementById('headingName');
     // headingEl.innerText = "..."
     countEl.innerText = "..."
 
     google.script.run.withSuccessHandler(function(content) {
       document.getElementById('selectedBox').innerText = content;
-      countEl.innerText = `${Math.ceil(content.length/2)} (V2 Turbo Model)`;
+      countEl.innerText = content.length;
     }).getSelectedText();
 
 

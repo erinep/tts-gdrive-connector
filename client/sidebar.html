@@ -11,13 +11,13 @@
     <button onclick="updateContext()">Update Text</button><br>
     <div id="selectedBox" class="context"><span class="loading">Loading...</span></div>
     <select id="voiceList"><option value="" disabled selected hidden>Select a voice </option></select>
-    <div>Credits: <span style="color:grey" id="creditCount"></span></div>
+    <div>Characters: <span style="color:grey" id="charCount"></span></div>
       <!-- <div>Heading: <span style="color:grey" id="headingName"></span></div> -->
 
 
     <div>
       <button id="ttsTriggerBtn" onclick="callTTS()">Build Speech!</button>
-      <button onclick="addToCue()">Add to Cue</button>
+      <!-- <button onclick="addToCue()">Add to Cue</button> -->
     </div>
     <audio id="audioPlayer" controls>
       <source id="audioSource" src="" type="audio/mpeg">
@@ -32,15 +32,15 @@
     <summary>API Manager</summary>
 
     <select id="api-selector" onchange="loadTTSService(event)">
-      <option value="1">Eleven Labs API</option>
-      <option value="2">Google TTS API</option>
+      <option value="eleven_labs">Eleven Labs API</option>
+      <option value="google-tts">Google TTS API</option>
     </select>
 
-    <div id="google-block" hidden>
+    <div class="google-block hidden">
       <p style="color:grey; font-family: italic">Input a Google token with access to <i>Cloud Text-to-Speech API</i></p>
 
     </div>
-    <div id="el-block" hidden>
+    <div class="el-block hidden">
       <p style="color:grey; font-family: italic">Input your ElevenLabs API Token here. Permissions: <i>Text to Speech, User (read), Voices (read)</i></p>
     </div>
 

@@ -5,8 +5,8 @@ function getCurrentService() {
 }
 
 function setCurrentService(value) {
-  if (value === "1") PropertiesService.getUserProperties().setProperty('current-service', 'eleven_labs');
-  else if (value === "2") PropertiesService.getUserProperties().setProperty('current-service', 'google-tts');
+  if (value === "eleven_labs") PropertiesService.getUserProperties().setProperty('current-service', 'eleven_labs');
+  else if (value === "google-tts") PropertiesService.getUserProperties().setProperty('current-service', 'google-tts');
   else throw new Error("service id '" + value + "' not found.");
 }
 
@@ -41,9 +41,9 @@ function test_tts_connection() {
 function getAIVoiceList() {
   let serve = getCurrentService();
   if (serve === "google-tts") {
-    return g_getVoices();
+    return {...g_getVoices(), "message": "Google Voices Loaded"};
   } else if (serve === "eleven_labs"){
-    return el_getVoicesElevenLabs();
+    return {...el_getVoicesElevenLabs(), "message": "Eleven Labs Voices Loaded"};
   } else {
     throw new Error("CURRENT_SERIVCE, " + serve + ", not found");
   }
