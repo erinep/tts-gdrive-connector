@@ -30,6 +30,10 @@
         <option value="en-AU">Australian</option>
       </select>
     </div>
+    <div class="form-row">
+      <label>Voice:</label>
+      <select id="voiceList"><option value="" disabled selected hidden>Select a voice </option></select>
+    </div>
     <div class="form-row google-block hidden">
       <label for="readingSpeedInput">Speed: <span id="readingSpeed">1</span></label></br>
       <input 
@@ -54,9 +58,9 @@
         oninput= "document.getElementById('readingPitch').textContent = this.value"
       >
     </div>
-    <div class="form-row">
-      <label>Voice:</label>
-      <select id="voiceList"><option value="" disabled selected hidden>Select a voice </option></select>
+    <div class="form-row el-block hidden" style="margin-top:5px;">
+      <label>Model: </label>
+      <span style="color:grey; width:fit-content;"><i>Turbo V2</i></span>
     </div>
     <button id="ttsTriggerBtn" onclick="callTTS()">Submit</button>
   </details>
