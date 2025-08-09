@@ -5,14 +5,16 @@
   <?!= include('client/stylesheet'); ?>
 </head>
 <body>
-  <div id="controls">
   <details>
-    <summary>Text To Speech</summary>
-    <button onclick="updateContext()">Update Text</button><br>
-    <div id="selectedBox" class="context"><span class="loading">Loading...</span></div>
-    <div>Characters: <span style="color:grey" id="charCount"></span></div>
+    <summary>Load Text</summary>
+    <button onclick="updateContext()">Update Text</button>
+    <div class="content" id="selectedBox" ><span class="loading">Loading...</span></div>
+    <div class="form-row"> <label>Characters: </label><i style="color:grey; margin: 0;" id="charCount"></i></div>
+  </details>
     <!-- <div>Heading: <span style="color:grey" id="headingName"></span></div> -->
     
+  <details>
+    <summary>Configure Voice</summary>
     <div class="form-row" >
       <label>TTS Service:</label>  
       <select id="api-selector" onchange="loadTTSService(event)">
@@ -20,7 +22,6 @@
         <option value="google-tts">Google TTS API</option>
       </select>
     </div>
-
     <div class="form-row google-block hidden">
       <label>Accent:</label>
       <select id="accent">
@@ -29,43 +30,53 @@
         <option value="en-AU">Australian</option>
       </select>
     </div>
-
-
     <div class="form-row google-block hidden">
-      <label for="readingSpeed">Reading speed:</label>
-      <input id="readingSpeed" style="width: 60px" value="1" type="number" min="0.5" max="2" step="0.05">
+      <label for="readingSpeedInput">Speed: <span id="readingSpeed">1</span></label></br>
+      <input 
+        id="readingSpeedInput" 
+        value="1" 
+        type="range" 
+        min="0.25" 
+        max="2" 
+        step="0.05"
+        oninput= "document.getElementById('readingSpeed').textContent = this.value"
+      >
     </div>
-
+    <div class="form-row google-block hidden">
+      <label for="readingPitchInput">Pitch: <span id="readingPitch">0</span></label></br>
+      <input 
+        id="readingPitchInput" 
+        value="0" 
+        type="range" 
+        min="-20" 
+        max="20" 
+        step="0.5"
+        oninput= "document.getElementById('readingPitch').textContent = this.value"
+      >
+    </div>
     <div class="form-row">
       <label>Voice:</label>
       <select id="voiceList"><option value="" disabled selected hidden>Select a voice </option></select>
     </div>
+    <button id="ttsTriggerBtn" onclick="callTTS()">Submit</button>
+  </details>
 
-    <div>
-      <button id="ttsTriggerBtn" onclick="callTTS()">Build Speech!</button>
-      <!-- <button onclick="addToCue()">Add to Cue</button> -->
-    </div>
+  <details>
+    <summary>Audio Player</summary>
     <audio id="audioPlayer" controls>
       <source id="audioSource" src="" type="audio/mpeg">
       Your browser does not support the audio element.
     </audio>
   </details>
-  <!-- <details>
-    <summary>playback</summary>
-    <div style="color:red">Not Implemented</div>
-  </details> -->
-  <details> 
+
+  <details>
     <summary>API Manager</summary>
-
     <p class="google-block hidden" style="color:grey; font-family: italic">Input a Google token with access to <i>Cloud Text-to-Speech API</i></p>
-    <p class="el-block hidden" style="color:grey; font-family: italic">Input your ElevenLabs API Token here. Permissions: <i>Text to Speech, User (read), Voices (read)</i></p>
-
-    <div>
-      <button type="button" onclick="saveKey()">Update Key</button>
-    </div>
+    <p class="el-block hidden" style="color:grey; font-family: italic">Input your ElevenLabs API Token here. Permissions: <i>Text to Speech</i></p>
     <textarea id="apikey" type="password" placeholder="update your key" style="width:100%"></textarea><br />
+    <button type="button" onclick="saveKey()">Update Key</button>
   </details>
-  </div>
+
   <div id="status"></div>
 
   <?!= include('client/javascript'); ?>

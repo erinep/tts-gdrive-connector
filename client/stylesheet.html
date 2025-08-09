@@ -8,6 +8,10 @@ body {
   background: #fff;
 }
 
+p {
+  margin: 0;
+}
+
 label {
   font-weight: 600;
   color: #555;
@@ -30,6 +34,7 @@ option {
   box-sizing: border-box;
   vertical-align: middle;
   color: #111;
+  accent-color: #4CAF50;
 }
 
 textarea {
@@ -38,30 +43,18 @@ textarea {
   resize: vertical;
 }
 
-button {
-  border: none;
-  background-color: #4CAF50;
-  color: white;
-  border-radius: 5px;
-  max-width: 100px;
-  transition: background-color 0.15s ease-in-out;
-}
-
-button:hover {
-  background-color: #77d77b;
-}
-
 .hidden {
   display: none !important;
   overflow: hidden !important;
 }
 
-.context {
+.content {
   border: 1px solid #ccc;
-  background: #f9f9f9;
   border-radius: 5px;
   padding: 8px;
   overflow: auto;
+  margin-bottom: 5px;
+  background-color: white;
   max-height: 200px;
 }
 
@@ -83,10 +76,54 @@ audio {
   height: 35px;
 }
 
+details {
+  background: #fafafa;
+  border: 1px solid #dcdcdc;
+  border-radius: 4px;
+  padding: 0.3rem 0.5rem;
+  margin-bottom: 0.3rem;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
+  overflow: auto;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  color: #34495e;
+  font-size: 0.7rem;
+  line-height: 1.1;
+}
+
 summary {
-  font-size: 1.2em;
+  font-size: 0.75rem;
   font-weight: 600;
   color: #2c3e50;
-  border-bottom: 2px solid #ddd;
+  border-bottom: 1px solid #e1e4e8;
+  padding-bottom: 0.1rem;
+  margin: 0 0 0.25rem 0;
+  letter-spacing: 0.008em;
+  line-height: 1.1;
+}
+
+button {
+  display: block;
+  width: 65%;
+  max-width: 140px;
+  min-width: 50px;
+  margin: 0.25rem auto 0;
+  padding: 0.25rem 0.5rem;
+  border: none;
+  border-radius: 3px;
+  background-color: #4caf50;
+  color: white;
+  font-weight: 600;
+  font-size: 0.7rem;
+  cursor: pointer;
+  box-shadow: 0 1px 2px rgba(76, 175, 80, 0.25);
+  transition: background-color 0.12s ease, box-shadow 0.12s ease;
+  line-height: 1;
+}
+
+button:hover,
+button:focus {
+  background-color: #43a047;
+  box-shadow: 0 2px 4px rgba(67, 160, 71, 0.3);
+  outline: none;
 }
 </style>
