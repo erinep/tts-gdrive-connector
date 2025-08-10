@@ -68,7 +68,13 @@
       
         showStatus("audio loaded. Storing to google drive...", false)
         google.script.run
-          .withSuccessHandler( msg => showStatus(msg, false))
+          .withSuccessHandler( details =>  {
+            const anchor = document.getElementById("driveLink");
+            anchor.href = details.file_url //"https://drive.google/file/d/"+details.file_id+"/preview";
+            anchor.innerText = details.file_name;
+            console.log(details);
+            showStatus(details.message, false);
+          })
           .withFailureHandler( msg => showStatus(msg, true))
           .addBase64ToDrive(data)
 

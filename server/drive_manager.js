@@ -45,9 +45,8 @@ function addBase64ToDrive(base64Obj, filename=null) {
 
     const folder = getOrCreateAppFolder()
     const file = folder.createFile(blob);
-    Logger.log(`file ${file} created`);
     const msg = `File saved to '${SERVICE_FOLDER_NAME}' folder in GDrive`;
-    return msg;
+    return {"message": msg, "file_url": file.getUrl(), "file_name": filename};
 
   } catch (e) {
     Logger.log("Error storing audio: " + e.toString());
