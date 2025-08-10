@@ -69,10 +69,14 @@
         showStatus("audio loaded. Storing to google drive...", false)
         google.script.run
           .withSuccessHandler( details =>  {
-            const anchor = document.getElementById("driveLink");
+            const div = document.getElementById("histDiv");
+            const anchor = document.createElement("a");
+            anchor.classList.add("historyLink")
+            anchor.target = "_blank";
             anchor.href = details.file_url //"https://drive.google/file/d/"+details.file_id+"/preview";
             anchor.innerText = details.file_name;
-            console.log(details);
+            div.appendChild(anchor)
+            // console.log(details);
             showStatus(details.message, false);
           })
           .withFailureHandler( msg => showStatus(msg, true))
