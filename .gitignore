@@ -1,4 +1,4 @@
-# Ignore node_modules if you're using clasp with TypeScript or other tooling
+# Ignore node_modules and other node files
 node_modules/
 
 # Ignore clasp's project settings
@@ -11,6 +11,7 @@ node_modules/
 # Ignore backup files or system files
 .DS_Store
 Thumbs.db
+.vscode/
 
 # Ignore build output if you're compiling TypeScript or bundling
 dist/

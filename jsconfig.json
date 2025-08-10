@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "allowJs": true,
+    "checkJs": true,
+    "typeRoots": ["./node_modules/@types"],
+    "types": ["google-apps-script"]
+  },
+  "include": [
+    "server/**/*.js",
+    "client/**/*.html",
+    "test/**/*.js"
+  ],
+}
