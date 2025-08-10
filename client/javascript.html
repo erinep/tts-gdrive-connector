@@ -1,39 +1,46 @@
 <script>
 
   function saveKey() {
-    const key = document.getElementById('apikey').value.trim();
+    const keyEl = document.getElementById('apikey');
+    const key = keyEl.value.trim();
     if (!key) {
       showStatus('Key empty', true);
       return;
     }
     google.script.run
-      .withSuccessHandler(res => {
-        showStatus(res.message+ " sending test request...", !res.success)
-        getVoices();
+      .withSuccessHandler(msg => {
+        keyEl.value = "";
+        showStatus(msg)
       })
       .withFailureHandler(e => showStatus(e.message, true))
       .setApiKeyForUser(key);
   }
 
-
-
   function getVoices() {
-    const dropdown  = document.getElementById('voiceList')
+    const dropdown  = document.getElementById('voiceList');
+    const isStudioInVoiceList = document.getElementById('showStudio').checked;
     dropdown.innerHTML = null;
 
     google.script.run
-      .withSuccessHandler( res => {        
+      .withSuccessHandler( res => {
 
-        res.voices.forEach(function(voice) {
-          const option = document.createElement('option');
-          option.text = voice?.name || voice;
-          option.value = voice?.id || voice;
-          dropdown.appendChild(option);
+        console.log(res);
+        // Build Voice Option list
+        Object.entries(res.voices).forEach(([groupName,voices]) => {
+          let optgroup = document.createElement("optgroup");
+          optgroup.label = groupName
+          voices.forEach( voice => {
+            let option = document.createElement('option');
+            option.text = voice?.name || voice;
+            option.value = voice?.id || voice;
+            optgroup.appendChild(option);
+          })
+          dropdown.appendChild(optgroup); 
         });
         showStatus(res.message, false);
       })
       .withFailureHandler( e => showStatus(e.message, true))
-      .getAIVoiceList()
+      .getAIVoiceList(isStudioInVoiceList)
   }
 
   function callTTS() {
@@ -80,7 +87,7 @@
 
   function showStatus(msg, isError) {
     const el = document.getElementById('status');
-    el.textContent = msg;
+    el.textContent = msg || "";
     el.style.color = isError ? 'red' : 'green';
   }
 

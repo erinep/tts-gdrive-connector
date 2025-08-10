@@ -38,12 +38,12 @@ function test_tts_connection() {
   }
 }
 
-function getAIVoiceList() {
+function getAIVoiceList(isStudio=null) {
   let serve = getCurrentService();
   if (serve === "google-tts") {
-    return {...g_getVoices(), "message": "Google Voices Loaded"};
+    return {voices: g_getVoices(isStudio), "message": "Google Voices Loaded"};
   } else if (serve === "eleven_labs"){
-    return {...el_getVoicesElevenLabs(), "message": "Eleven Labs Voices Loaded"};
+    return {voices: el_getVoicesElevenLabs(), "message": "Eleven Labs Voices Loaded"};
   } else {
     throw new Error("CURRENT_SERIVCE, " + serve + ", not found");
   }

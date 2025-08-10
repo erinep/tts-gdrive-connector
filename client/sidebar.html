@@ -6,8 +6,7 @@
 </head>
 <body>
   <details>
-    <summary>Load Text</summary>
-    <button onclick="updateContext()">Update Text</button>
+    <summary>Text Preview</summary>
     <div class="content" id="selectedBox" ><span class="loading">Loading...</span></div>
     <div class="form-row"> <label>Characters: </label><i style="color:grey; margin: 0;" id="charCount"></i></div>
   </details>
@@ -15,13 +14,6 @@
     
   <details>
     <summary>Configure Voice</summary>
-    <div class="form-row" >
-      <label>TTS Service:</label>  
-      <select id="api-selector" onchange="loadTTSService(event)">
-        <option value="eleven_labs">Eleven Labs API</option>
-        <option value="google-tts">Google TTS API</option>
-      </select>
-    </div>
     <div class="form-row google-block hidden">
       <label>Accent:</label>
       <select id="accent">
@@ -33,7 +25,6 @@
     <div class="form-row">
       <label>Voice:</label>
       <select id="voiceList"><option value="" disabled selected hidden>Select a voice </option></select>
-      <p class="google-block hidden"><i style="font-size: xx-small; color:rgb(175, 175, 175)">*Australian Studio voices not available</i></p>
     </div>
     <div class="form-row google-block hidden">
       <label for="readingSpeedInput">Speed: <span id="readingSpeed">1</span></label></br>
@@ -64,6 +55,7 @@
       <label>Model: </label>
       <span style="color:grey; width:fit-content;"><i>Turbo V2</i></span>
     </div>
+    <button onclick="updateContext()">Update Text</button>
     <button id="ttsTriggerBtn" onclick="callTTS()">Submit</button>
   </details>
 
@@ -76,11 +68,26 @@
   </details>
 
   <details>
-    <summary>API Manager</summary>
-    <p class="google-block hidden" style="color:grey; font-family: italic">Input a Google token with access to <i>Cloud Text-to-Speech API</i></p>
-    <p class="el-block hidden" style="color:grey; font-family: italic">Input your ElevenLabs API Token here. Permissions: <i>Text to Speech</i></p>
-    <textarea id="apikey" type="password" placeholder="update your key" style="width:100%"></textarea><br />
+    <summary>Settings</summary>
+    <div class="form-row" >
+      <label>TTS Service:</label>  
+      <select id="api-selector" onchange="loadTTSService(event)">
+        <option value="eleven_labs">Eleven Labs</option>
+        <option value="google-tts">Google Text-To-Speech</option>
+      </select>
+    </div>
+    <div class="google-block hidden">
+      <label for="showStudio">Include Studio Voices?</label>
+      <input id="showStudio" onchange="getVoices()" type="checkbox" style="width: fit-content">
+      <p class="google-block hidden">Studio voices only available for American and British Accents</p>
+    </div>
+    <label for="apikey">API setup:</label>
+    <p class="google-block hidden">Input a Google token with access to <i>Cloud Text-to-Speech API</i></p>
+    <p class="el-block hidden">Input your ElevenLabs API Token here. Permissions: <i>Text to Speech</i></p>
+    <textarea id="apikey" type="password" placeholder="update your key"></textarea><br />
     <button type="button" onclick="saveKey()">Update Key</button>
+    <!-- <button type="button" onclick="testConnection()">Test</button> -->
+    <button type="button" onclick="showStatus()">Clear Status Msg</button>
   </details>
 
   <div id="status"></div>
