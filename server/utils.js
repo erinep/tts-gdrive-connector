@@ -48,7 +48,7 @@ function toBase64Obj(blob) {
 function getTimeString() {
   const now = new Date();
   const timezone = Session.getScriptTimeZone(); // Use your script's timezone
-  return Utilities.formatDate(now, timezone, 'yyyyMMddHHmmss');
+  return Utilities.formatDate(now, timezone, 'HH:mm:ss');
 }
 
 function getHeadingText() {

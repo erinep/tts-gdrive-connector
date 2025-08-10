@@ -28,14 +28,14 @@ function getOrCreateAppFolder() {
   
 }
 
-function audioFileName(){
-  const service = getCurrentService();
-  const filename = getDocFileName() + "_"+ service + "_" + getTimeString() + ".mp3";
+function audioFileName(metaData){
+  const d = getDocFileName().replace(/[^a-zA-Z0-9]/g, '');
+  const filename = `${d.substring(0,4)}_${metaData.voice.substring(0,10)}_${getTimeString()}.mp3`;
   return filename
 }
 
-function addBase64ToDrive(base64Obj, filename=null) {
-  if(!filename) filename = audioFileName();
+function addBase64ToDrive(base64Obj, metaData) {
+  const filename = audioFileName(metaData);
 
   try {
     const { base64, contentType } = base64Obj;

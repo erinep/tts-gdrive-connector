@@ -57,6 +57,10 @@
 
     google.script.run
       .withSuccessHandler( data => {
+
+        let metaData = {
+          voice: voice_id,
+        }
         
         showStatus("audio built", false)
         const source = document.getElementById("audioSource");
@@ -80,7 +84,7 @@
             showStatus(details.message, false);
           })
           .withFailureHandler( msg => showStatus(msg, true))
-          .addBase64ToDrive(data)
+          .addBase64ToDrive(data, metaData)
 
       })
       .withFailureHandler( e => {
