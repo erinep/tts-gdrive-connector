@@ -23,7 +23,7 @@ function g_callTextToSpeech(text, voiceName, languageCode, speed) {
 
   let voice_id = ""
 
-  if (voiceName.includes("studio")){
+  if (voiceName.includes("Studio")){
     if (languageCode=== "en-AU") throw new Error("Australian Studio Voice not supported");
     voice_id = google_studio_voices[voiceName][languageCode];
   } else {
