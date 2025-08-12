@@ -1,28 +1,28 @@
 function getSelectedText() {
   var selection = DocumentApp.getActiveDocument().getSelection();
-  if (!selection) return '(No text selected)';
+  if (!selection) throw new Error("Nothing selected");
 
   var selectedText = '';
-  var rangeElements = selection.getRangeElements();
 
-  for (var i = 0; i < rangeElements.length; i++) {
-    var element = rangeElements[i];
-    var elem = element.getElement();
+  selection.getRangeElements().forEach(rangeElement => {
+    var element = rangeElement.getElement();
 
-    if (elem.editAsText) {
-      var textElement = elem.editAsText();
+    if (typeof element.editAsText === 'function') {
+      var textElement = element.editAsText();
 
-      if (element.isPartial()) {
+      if (rangeElement.isPartial()) {
         selectedText += textElement.getText().substring(
-          element.getStartOffset(),
-          element.getEndOffsetInclusive() + 1
+          rangeElement.getStartOffset(),
+          rangeElement.getEndOffsetInclusive() + 1
         );
       } else {
         selectedText += textElement.getText();
       }
     }
-  }
-  return selectedText || '(No text selected)';
+  });
+  
+  if (!selectedText) throw new Error("Failed to parse selection");
+  return selectedText;
 }
 
 

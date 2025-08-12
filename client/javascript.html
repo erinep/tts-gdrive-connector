@@ -50,8 +50,7 @@
     const locale = document.getElementById("accent")?.value;
     const speed = document.getElementById("readingSpeedInput")?.value;
     const btn = document.getElementById("ttsTriggerBtn")
-    btn.style.backgroundColor = "grey";
-    btn.setAttribute("disabled", "disabled");
+    btn.setAttribute("disabled","disabled");
 
     console.log(text);
 
@@ -67,13 +66,14 @@
         const player = document.getElementById("audioPlayer");
         source.src = `data:${data.contentType};base64,${data.base64}`;
         player.load();
-        btn.style.backgroundColor = "#4CAF50";
         btn.removeAttribute("disabled");
+        const div = document.getElementById("histDiv");
+        div.classList.add("loading");
       
         showStatus("audio loaded. Storing to google drive...", false)
         google.script.run
           .withSuccessHandler( details =>  {
-            const div = document.getElementById("histDiv");
+            div.classList.remove("loading");
             const anchor = document.createElement("a");
             anchor.classList.add("historyLink")
             anchor.target = "_blank";
@@ -83,14 +83,17 @@
             // console.log(details);
             showStatus(details.message, false);
           })
-          .withFailureHandler( msg => showStatus(msg, true))
+          .withFailureHandler( msg => {
+            showStatus(msg, true);
+            div.classList.remove("loading");
+          })
           .addBase64ToDrive(data, metaData)
 
       })
       .withFailureHandler( e => {
         showStatus(e.message, true);
-        btn.style.backgroundColor = "#4CAF50";
         btn.removeAttribute("disabled");
+
       }).fetchAudioBase64(text, voice_id, locale, speed);
   }
 
@@ -147,16 +150,26 @@ function controllerPageUpdate (value ){
 }
 
   function updateContext() {
-    document.getElementById('selectedBox').innerHTML = '<span class="loading">Loading...</span>';
+    const selectionEl = document.getElementById('selectedBox'); 
+    selectionEl.innerText = "";
+    selectionEl.classList.add("loading");
     const countEl = document.getElementById('charCount');
-    // const headingEl = document.getElementById('headingName');
-    // headingEl.innerText = "..."
-    countEl.innerText = "..."
+    countEl.innerText = "";
+    countEl.classList.add("loading");
 
-    google.script.run.withSuccessHandler(function(content) {
-      document.getElementById('selectedBox').innerText = content;
+    google.script.run
+    .withSuccessHandler(function(content) {
+      selectionEl.innerText = content;
       countEl.innerText = content.length;
-    }).getSelectedText();
+      selectionEl.classList.remove("loading");
+      countEl.classList.remove("loading");
+    })
+    .withFailureHandler(e => {
+      selectionEl.classList.remove("loading");
+      countEl.classList.remove("loading");
+      showStatus(e.message, true)
+    })
+    .getSelectedText();
 
 
 
