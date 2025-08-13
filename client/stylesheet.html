@@ -3,7 +3,7 @@ body {
   margin: 0;
   padding: 2px 2px 3em;
   font-family: Arial, sans-serif;
-  font-size: 13px;
+  font-size: 14px;
   color: #222;
   background: #fff;
 }
@@ -90,7 +90,7 @@ audio {
   height: 35px;
 }
 
-details {
+.menu-block {
   background: #fafafa;
   border: 1px solid #dcdcdc;
   border-radius: 4px;
@@ -115,32 +115,76 @@ summary {
   line-height: 1.1;
 }
 
-button {
-  background-color: #388e3c;
-  color: white;
-  font-weight: 600;
-  font-size: 0.7rem;
-  cursor: pointer;
-  box-shadow: 0 1px 2px rgba(185, 185, 185, 0.6);
-  transition: background-color 0.15s ease, box-shadow 0.15s ease;
-  line-height: 1;
-  border: none;
-  border-radius: 3px;
-  padding: 0.25rem 0.5rem;
+
+.toolbar-buttons {
+  display: flex;
+  gap: 0.2em;
+  margin-bottom: 0.7em;
+  align-items: center;
+  background: #f5f5f5;
+  border-radius: 4px;
+  padding: 0.12em 0.3em;
+  box-shadow: none;
+  flex-wrap: nowrap;
 }
 
-button:hover:not(:disabled) {
-  background-color: #215a24;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+.toolbar-btn {
+  background: none;
+  color: #222;
+  font-weight: 500;
+  font-size: 0.95em;
+  border: none;
+  border-radius: 3px;
+  padding: 0.18em 0.8em;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+  box-shadow: none;
+  min-width: 0;
+  min-height: 0;
+  line-height: 1.5;
+  display: inline-block;
 }
-button:disabled {
-  background-color: grey;
-  color: white;
+
+.toolbar-btn:hover,
+.toolbar-btn:focus-visible,
+.toolbar-btn:active {
+  background: #e0e0e0;
 }
-button:disabled::after {
-  content: '...';
-  position: absolute;
-  right: 12px;
-  font-weight: bold;
+
+.btn {
+  background: linear-gradient(90deg, #43a047 0%, #388e3c 100%);
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.85rem;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(67, 160, 71, 0.15);
+  transition: background 0.18s, box-shadow 0.18s, transform 0.12s;
+  line-height: 1.2;
+  border: none;
+  border-radius: 5px;
+  padding: 0.4rem 1.1rem;
+  margin-right: 0.3em;
+  margin-bottom: 0.3em;
+  letter-spacing: 0.03em;
+  position: relative;
+}
+
+.btn:hover:not(:disabled) {
+  background: linear-gradient(90deg, #388e3c 0%, #43a047 100%);
+  box-shadow: 0 4px 12px rgba(67, 160, 71, 0.22);
+  transform: translateY(-2px) scale(1.04);
+}
+
+.btn:active:not(:disabled) {
+  background: linear-gradient(90deg, #2e7031 0%, #388e3c 100%);
+  box-shadow: 0 1px 3px rgba(67, 160, 71, 0.18);
+  transform: translateY(1px) scale(0.98);
+}
+
+.btn:disabled {
+  background: #bdbdbd;
+  color: #eee;
+  cursor: not-allowed;
+  opacity: 0.7;
 }
 </style>

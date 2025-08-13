@@ -149,31 +149,27 @@ function controllerPageUpdate (value ){
   }
 }
 
-  function updateContext() {
-    const selectionEl = document.getElementById('selectedBox'); 
+  function getDocText(serverFunctionName) {
+    const selectionEl = document.getElementById('selectedBox');
+    const countEl = document.getElementById('charCount');
     selectionEl.innerText = "";
     selectionEl.classList.add("loading");
-    const countEl = document.getElementById('charCount');
     countEl.innerText = "";
     countEl.classList.add("loading");
 
     google.script.run
-    .withSuccessHandler(function(content) {
-      selectionEl.innerText = content;
-      countEl.innerText = content.length;
-      selectionEl.classList.remove("loading");
-      countEl.classList.remove("loading");
-    })
-    .withFailureHandler(e => {
-      selectionEl.classList.remove("loading");
-      countEl.classList.remove("loading");
-      showStatus(e.message, true)
-    })
-    .getSelectedText();
-
-
-
+      .withSuccessHandler(function(content) {
+        selectionEl.innerText = content;
+        countEl.innerText = content.length;
+        selectionEl.classList.remove("loading");
+        countEl.classList.remove("loading");
+      })
+      .withFailureHandler(e => {
+        selectionEl.classList.remove("loading");
+        countEl.classList.remove("loading");
+        showStatus(e.message, true);
+      })[serverFunctionName]();
   }
+
   loadTTSService();
-  updateContext();
 </script>

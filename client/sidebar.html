@@ -5,14 +5,27 @@
   <?!= include('client/stylesheet'); ?>
 </head>
 <body>
-  <details>
+  <div class="menu-block">
     <summary>Text Preview</summary>
-    <div class="content" id="selectedBox" ><span class="loading">Loading...</span></div>
-    <div class="form-row"> <label>Characters: </label><i style="color:grey; margin: 0;" id="charCount"></i></div>
-  </details>
-    <!-- <div>Heading: <span style="color:grey" id="headingName"></span></div> -->
-    
-  <details>
+      <div class="toolbar-buttons">
+  <button class="toolbar-btn" type="button" title="Get Current Paragraph" onclick="getDocText('getCurrentParagraphText')">
+    Paragraph
+  </button>
+  <button class="toolbar-btn" type="button" title="Get Selected Text" onclick="getDocText('getSelectedText')">
+    Selected
+  </button>
+  <button class="toolbar-btn" type="button" title="Get Up to 1000 Characters" onclick="getDocText('getParagraphsUpTo1000')">
+    Batch
+  </button>
+</div>
+    <div class="content" id="selectedBox" ><span class="loading"></span></div>
+    <div class="form-row">
+      <label>Characters: </label>
+      <i style="color:grey; margin: 0;" id="charCount"></i>
+    </div>
+  </div>
+
+  <details class="menu-block">
     <summary>Configure Voice</summary>
     <div class="form-row google-block hidden">
       <label>Accent:</label>
@@ -42,11 +55,10 @@
       <label>Model: </label>
       <span style="color:grey; width:fit-content;"><i>Turbo V2</i></span>
     </div>
-    <button onclick="updateContext()">Update Text</button>
-    <button id="ttsTriggerBtn" onclick="callTTS()">Submit</button>
+    <button id="ttsTriggerBtn" class="btn" onclick="callTTS()">Submit</button>
   </details>
 
-  <details>
+  <details class="menu-block">
     <summary>Audio Player</summary>
     <audio id="audioPlayer" controls>
       <source id="audioSource" src="" type="audio/mpeg">
@@ -59,7 +71,7 @@
     </div>
   </details>
 
-  <details>
+  <details class="menu-block">
     <summary>Settings</summary>
     <div class="form-row" >
       <label>TTS Service:</label>  
@@ -77,9 +89,9 @@
     <p class="google-block hidden">Input a Google token with access to <i>Cloud Text-to-Speech API</i></p>
     <p class="el-block hidden">Input your ElevenLabs API Token here. Permissions: <i>Text to Speech</i></p>
     <textarea id="apikey" type="password" placeholder="update your key"></textarea><br />
-    <button type="button" onclick="saveKey()">Update Key</button>
+    <button type="button" class="btn" onclick="saveKey()">Update Key</button>
     <!-- <button type="button" onclick="testConnection()">Test</button> -->
-    <button type="button" onclick="showStatus()">Clear Status Msg</button>
+    <button type="button" class="btn" onclick="showStatus()">Clear Status Msg</button>
   </details>
 
   <div id="status"></div>
