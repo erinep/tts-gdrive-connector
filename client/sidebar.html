@@ -23,6 +23,11 @@
       <label>Characters: </label>
       <i style="color:grey; margin: 0;" id="charCount"></i>
     </div>
+    <button id="ttsTriggerBtn" class="btn" onclick="callTTS()">Submit</button>
+    <audio id="audioPlayer" controls>
+      <source id="audioSource" src="" type="audio/mpeg">
+      Your browser does not support the audio element.
+    </audio>
   </details>
 
   <details class="menu-block">
@@ -55,17 +60,11 @@
       <label>Model: </label>
       <span style="color:grey; width:fit-content;"><i>Turbo V2</i></span>
     </div>
-    <button id="ttsTriggerBtn" class="btn" onclick="callTTS()">Submit</button>
   </details>
 
   <details class="menu-block">
-    <summary>Audio Player</summary>
-    <audio id="audioPlayer" controls>
-      <source id="audioSource" src="" type="audio/mpeg">
-      Your browser does not support the audio element.
-    </audio>
+    <summary>History</summary>
     <div id="histDiv">
-      <label>history</label>
       <!-- <a id="driveLink" target="_blank"></a> -->
       <!-- RECORDING HISTORY WILL BE ADDED HERE -->
     </div>
