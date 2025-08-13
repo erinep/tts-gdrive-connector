@@ -50,6 +50,9 @@ function getParagraphsUpTo1000() {
 
   let text = '';
   let current = el;
+  if (current.getHeading() !== DocumentApp.ParagraphHeading.NORMAL) {
+    throw new Error("Please place your cursor in a normal paragraph.");
+  }
   while (current && text.length < 950) { // stop before 1000 for speed
     if (current.getType() !== DocumentApp.ElementType.PARAGRAPH) break;
     // Stop if we hit a heading
