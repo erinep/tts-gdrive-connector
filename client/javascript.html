@@ -152,6 +152,7 @@ function controllerPageUpdate (value ){
   function getDocText(serverFunctionName) {
     const selectionEl = document.getElementById('selectedBox');
     const countEl = document.getElementById('charCount');
+    selectionEl.classList.remove("text-error");
     selectionEl.innerText = "";
     selectionEl.classList.add("loading");
     countEl.innerText = "";
@@ -165,9 +166,11 @@ function controllerPageUpdate (value ){
         countEl.classList.remove("loading");
       })
       .withFailureHandler(e => {
-        selectionEl.classList.remove("loading");
         countEl.classList.remove("loading");
-        showStatus(e.message, true);
+        selectionEl.classList.remove("loading");
+        selectionEl.classList.add("text-error");
+        selectionEl.innerText = e.message;
+        countEl.innerText = "";
       })[serverFunctionName]();
   }
 
