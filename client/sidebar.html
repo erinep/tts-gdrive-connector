@@ -5,7 +5,7 @@
   <?!= include('client/stylesheet'); ?>
 </head>
 <body>
-  <div class="menu-block">
+  <details class="menu-block" open>
     <summary>Text Preview</summary>
       <div class="toolbar-buttons">
   <button class="toolbar-btn" type="button" title="Get Current Paragraph" onclick="getDocText('getCurrentParagraphText')">
@@ -23,7 +23,7 @@
       <label>Characters: </label>
       <i style="color:grey; margin: 0;" id="charCount"></i>
     </div>
-  </div>
+  </details>
 
   <details class="menu-block">
     <summary>Configure Voice</summary>
