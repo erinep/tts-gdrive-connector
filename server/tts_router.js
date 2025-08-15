@@ -15,7 +15,7 @@ function fetchAudioBase64(text, voice, locale, speed) {
   if (!apiKey) throw new Error ("API key missing");  
   if (!text|| text === '(No text selected)') throw new Error ("No Text selected");
   if (!voice) throw new Error ("No Voice Selected");
-  if (text.length > 1000) throw new Error ("Text too long");
+  if (text.length > 5000) throw new Error ("Text too long");
 
   let serve = getCurrentService();
   if (serve === "google-tts") {
