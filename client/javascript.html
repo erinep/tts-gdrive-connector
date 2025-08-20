@@ -52,7 +52,7 @@
 
       const audioChunks = await fetchAudio(text, voice, locale, speed);
 
-      playAudioChunks(audioChunks);
+      loadAudioChunks(audioChunks);
 
       showStatus("Storing audio...");
       const driveDetails = await storeAudio(audioChunks);
@@ -91,17 +91,7 @@
     });
   }
 
-  function playAudioChunks(audioChunks) {
-    const source = document.getElementById("audioSource");
-    const player = document.getElementById("audioPlayer");
 
-    // If array, play first chunk (extend to play all sequentially later)
-    const chunk = Array.isArray(audioChunks) ? audioChunks[0] : audioChunks;
-
-    source.src = `data:${chunk.contentType};base64,${chunk.base64}`;
-    player.load();
-    player.play();
-  }
 
   function storeAudio(audioChunks) {
     const metaData = { voice: audioChunks[0]?.voice || "unknown" };

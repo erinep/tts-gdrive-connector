@@ -24,10 +24,18 @@
       <i style="color:grey; margin: 0;" id="charCount"></i>
     </div>
     <button id="ttsTriggerBtn" class="btn" onclick="callTTS()">Submit</button>
-    <audio id="audioPlayer" controls>
+    <!-- <audio id="audioPlayer" controls>
       <source id="audioSource" src="" type="audio/mpeg">
       Your browser does not support the audio element.
-    </audio>
+    </audio> -->
+    <div id="chunkControls" class="toolbar-buttons">
+      <button id="prevChunkBtn" onClick="prevChunk()" class="toolbar-btn">⏮️</button>
+      <button id="PlayAllChunks" onClick="pausePlayChunks()" class="toolbar-btn">⏯️</button>
+      <button id="PlayAllChunks" onClick="stopChunks()" class="toolbar-btn">⏹️</button>
+      <button id="PlayAllChunks" onClick="restartActiveChunks()" class="toolbar-btn">🔄</button>
+      <button id="nextChunkBtn" onClick="nextChunk()" class="toolbar-btn">⏭️</button>
+    </div>
+    <p id="previewChunk"class="content">test!</p>
   </details>
 
   <details class="menu-block">
@@ -62,7 +70,7 @@
     </div>
   </details>
 
-  <details class="menu-block">
+  <details class="menu-block" open>
     <summary>History</summary>
     <div id="histDiv">
       <!-- <a id="driveLink" target="_blank"></a> -->
@@ -96,5 +104,6 @@
   <div id="status"></div>
 
   <?!= include('client/javascript'); ?>
+  <?!= include('client/audio'); ?>
 </body>
 </html>
