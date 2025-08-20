@@ -30,3 +30,19 @@ function getTimeString() {
   return Utilities.formatDate(now, timezone, 'HH:mm:ss');
 }
 
+function chunkTextBySentence(text, maxLength = 1000) {
+  const sentences = text.match(/[^.!?]+[.!?]+(?:\s+|$)/g) || [text];
+  let chunks = [];
+  let current = "";
+
+  for (let sentence of sentences) {
+    if ((current + sentence).length > maxLength) {
+      if (current.length > 0) chunks.push(current.trim());
+      current = sentence;
+    } else {
+      current += sentence;
+    }
+  }
+  if (current.trim().length > 0) chunks.push(current.trim());
+  return chunks;
+}
