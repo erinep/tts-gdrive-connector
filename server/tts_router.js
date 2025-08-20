@@ -10,7 +10,7 @@ function setCurrentService(value) {
   else throw new Error("service id '" + value + "' not found.");
 }
 
-function fetchAudioBase64(text, voice, locale, speed) {
+async function fetchAudioBase64(text, voice, locale, speed) {
   const apiKey = getApiKeyForUser();
   if (!apiKey) throw new Error ("API key missing");  
   if (!text|| text === '(No text selected)') throw new Error ("No Text selected");
@@ -19,9 +19,37 @@ function fetchAudioBase64(text, voice, locale, speed) {
 
   let serve = getCurrentService();
   if (serve === "google-tts") {
-    return g_callTextToSpeech(text, voice, locale, speed);
+    const base64Audio  = g_callTextToSpeech(text, voice, locale, speed);
+    return [{
+      base64: base64Audio.base64,
+      contentType: base64Audio.contentType,
+      text: text,
+      voice: voice,
+      speed: speed,
+      locale: locale,
+      provider: serve,
+      index: 0 // for Google, we're not chunking yet, so just set index to 0
+    }]
   } else if (serve === "eleven_labs"){
-    return el_callTextToSpeech(text, voice);
+
+    // Chunk the text before sending
+    const chunks = chunkTextBySentence(text, 1000);
+    const audioChunks = [];
+
+    for (let i = 0; i < chunks.length; i++) {
+      const chunk = chunks[i];
+      const base64Audio = await el_callTextToSpeech(chunk, voice);
+      audioChunks.push({
+        base64: base64Audio.base64,
+        contentType: base64Audio.contentType,
+        voice: voice,
+        text: chunk,
+        provider: serve,
+        index: i
+      });
+    }
+    return audioChunks;
+    
   } else {
     throw new Error("CURRENT_SERIVCE '" + serve + "' not found");
   }
