@@ -42,59 +42,95 @@
       .withFailureHandler( e => showStatus(e.message, true))
       .getAIVoiceList(isStudioInVoiceList)
   }
+  
+  async function callTTS() {
+    try {
+      toggleBtnDisabled(true);
 
-  function callTTS() {
+      const { text, voice, locale, speed } = getUserInputs();
+      showStatus("Requesting audio...");
 
-    const text = document.getElementById("selectedBox").innerText;
-    const voice_id = document.getElementById("voiceList").value;
-    const locale = document.getElementById("accent")?.value;
-    const speed = document.getElementById("readingSpeedInput")?.value;
-    const btn = document.getElementById("ttsTriggerBtn")
-    btn.setAttribute("disabled","disabled");
+      const audioChunks = await fetchAudio(text, voice, locale, speed);
 
-    console.log(text);
+      playAudioChunks(audioChunks);
 
-    google.script.run
-      .withSuccessHandler( data => {
+      showStatus("Storing audio...");
+      const driveDetails = await storeAudio(audioChunks);
 
-        let metaData = {
-          voice: voice_id,
-        }
-        
-        showStatus("audio built", false)
-        const source = document.getElementById("audioSource");
-        const player = document.getElementById("audioPlayer");
-        source.src = `data:${data.contentType};base64,${data.base64}`;
-        player.load();
-        btn.removeAttribute("disabled");
-        const div = document.getElementById("histDiv");
-        div.classList.add("loading");
-      
-        showStatus("audio loaded. Storing to google drive...", false)
-        google.script.run
-          .withSuccessHandler( details =>  {
-            div.classList.remove("loading");
-            const anchor = document.createElement("a");
-            anchor.classList.add("historyLink")
-            anchor.target = "_blank";
-            anchor.href = details.file_url //"https://drive.google/file/d/"+details.file_id+"/preview";
-            anchor.innerText = details.file_name;
-            div.appendChild(anchor)
-            // console.log(details);
-            showStatus(details.message, false);
-          })
-          .withFailureHandler( msg => {
-            showStatus(msg, true);
-            div.classList.remove("loading");
-          })
-          .addBase64ToDrive(data, metaData)
+      updateHistoryUI(driveDetails);
 
-      })
-      .withFailureHandler( e => {
-        showStatus(e.message, true);
-        btn.removeAttribute("disabled");
+      showStatus(driveDetails.message);
+    } catch (err) {
+      showStatus(err.message, true);
+    } finally {
+      toggleBtnDisabled(false);
+    }
+  }
 
-      }).fetchAudioBase64(text, voice_id, locale, speed);
+  function getUserInputs() {
+    return {
+      text: document.getElementById("selectedBox").innerText,
+      voice: document.getElementById("voiceList").value,
+      locale: document.getElementById("accent")?.value,
+      speed: document.getElementById("readingSpeedInput")?.value
+    };
+  }
+
+  function toggleBtnDisabled(isDisabled) {
+    const btn = document.getElementById("ttsTriggerBtn");
+    if (isDisabled) btn.setAttribute("disabled", "disabled");
+    else btn.removeAttribute("disabled");
+  }
+
+  function fetchAudio(text, voice, locale, speed) {
+    return new Promise((resolve, reject) => {
+      google.script.run
+        .withSuccessHandler(resolve)
+        .withFailureHandler(reject)
+        .fetchAudioBase64(text, voice, locale, speed);
+    });
+  }
+
+  function playAudioChunks(audioChunks) {
+    const source = document.getElementById("audioSource");
+    const player = document.getElementById("audioPlayer");
+
+    // If array, play first chunk (extend to play all sequentially later)
+    const chunk = Array.isArray(audioChunks) ? audioChunks[0] : audioChunks;
+
+    source.src = `data:${chunk.contentType};base64,${chunk.base64}`;
+    player.load();
+    player.play();
+  }
+
+  function storeAudio(audioChunks) {
+    const metaData = { voice: audioChunks[0]?.voice || "unknown" };
+
+    return new Promise((resolve, reject) => {
+      const div = document.getElementById("histDiv");
+      div.classList.add("loading");
+
+      google.script.run
+        .withSuccessHandler(details => {
+          div.classList.remove("loading");
+          resolve(details);
+        })
+        .withFailureHandler(msg => {
+          div.classList.remove("loading");
+          reject(new Error(msg));
+        })
+        .addBase64ToDrive(audioChunks, metaData);
+    });
+  }
+
+  function updateHistoryUI(details) {
+    const div = document.getElementById("histDiv");
+    const anchor = document.createElement("a");
+    anchor.classList.add("historyLink");
+    anchor.target = "_blank";
+    anchor.href = details.file_url;
+    anchor.innerText = details.file_name;
+    div.appendChild(anchor);
   }
 
   function addToCue() {
