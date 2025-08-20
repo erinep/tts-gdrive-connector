@@ -28,28 +28,68 @@ function getOrCreateAppFolder() {
   
 }
 
-function audioFileName(metaData){
+function buildHistoryJSON(audioChunks, files){
+  const sessionId = new Date().toISOString().replace(/[:.]/g, "-");
+  const history = {
+    session_id: sessionId,
+    created_at: new Date().toISOString(),
+    provider: audioChunks?.provider || "unknown",
+    voice: audioChunks[0]?.voice || "unknown",
+    speed: audioChunks[0]?.speed || "1x",
+    locale: audioChunks[0]?.locale || "en-US",
+    chunks: files.map((file, i) => ({
+      index: file.index,
+      text: audioChunks[i].text,
+      file_name: file.file_name,
+      file_url: file.file_url,
+      size: `${Utilities.newBlob(Utilities.base64Decode(audioChunks[i].base64)).getBytes().length} bytes`
+    })),
+  };
+  return history;
+}
+
+
+function audioFileName(voice, index){
   const d = getDocFileName().replace(/[^a-zA-Z0-9]/g, '');
-  const filename = `${d.substring(0,4)}_${metaData.voice.substring(0,10)}_${getTimeString()}.mp3`;
+  const filename = `${d.substring(0,4)}_${voice.substring(0,10)}_Chunk${String(index).padStart(2, '0')}.mp3`;
   return filename
 }
 
-function addBase64ToDrive(base64Obj, metaData) {
-  const filename = audioFileName(metaData);
+function addBase64ToDrive(audioChunks) {
+  const rootFolder = getOrCreateAppFolder();
+  const sessionfolder = rootFolder.createFolder(`Session_${new Date().toISOString()}`);
+  const savedFiles = [];
 
-  try {
-    const { base64, contentType } = base64Obj;
-    const cleanedBase64 = base64.includes(',') ? base64.split(',')[1] : base64;
-    const decodedBytes = Utilities.base64Decode(cleanedBase64);
-    const blob = Utilities.newBlob(decodedBytes, contentType, filename);
+  for (let chunk of audioChunks) {
+    try {
+      const { base64, contentType, voice, index } = chunk;
+      const cleanedBase64 = base64.includes(',') ? base64.split(',')[1] : base64;
+      const decodedBytes = Utilities.base64Decode(cleanedBase64);
+      
+      const filename = audioFileName(voice, index);
 
-    const folder = getOrCreateAppFolder()
-    const file = folder.createFile(blob);
-    const msg = `File saved to '${SERVICE_FOLDER_NAME}' folder in GDrive`;
-    return {"message": msg, "file_url": file.getUrl(), "file_name": filename};
+      const blob = Utilities.newBlob(decodedBytes, contentType, filename);
+      const file = sessionfolder.createFile(blob);
 
-  } catch (e) {
-    Logger.log("Error storing audio: " + e.toString());
-    throw new Error("Failed to store audio.");
+      savedFiles.push({
+        file_name: file.getName(),
+        file_url: file.getUrl(),
+        index: index
+      });
+      
+    } catch (e) {
+      Logger.log(`Failed to save chunk ${chunk.index}: ${e}`);
+      throw new Error(`Failed to store audio chunk ${chunk.index}`);
+    }
   }
+  // Save history to a JSON file in the same folder
+  const h = buildHistoryJSON(audioChunks, savedFiles);
+  const historyBlob = Utilities.newBlob(JSON.stringify(h, null, 2), 'application/json', 'history.json');
+  sessionfolder.createFile(historyBlob);
+  
+  return {
+    message: `Saved ${savedFiles.length} audio chunk(s) to Drive.`,
+    file_url: sessionfolder.getUrl(),
+    file_name: sessionfolder.getName(),
+  };
 }
