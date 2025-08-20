@@ -38,10 +38,9 @@ function getSelectedText() {
   return selectedText;
 }
 
-function getParagraphsUpToX() {
+function getParagraphsUpToX(maxLength = 5000) {
   
-  const x = 5000;
-  if (typeof x !== 'number' || x <= 0 || x > 5000) {
+  if (typeof maxLength !== 'number' || maxLength <= 0 || maxLength > 5000) {
     throw new Error("Invalid length specified. Please provide number between 0 and 5000.");
   }  
   const doc = DocumentApp.getActiveDocument();
@@ -58,12 +57,12 @@ function getParagraphsUpToX() {
   if (current.getHeading() !== DocumentApp.ParagraphHeading.NORMAL) {
     throw new Error("Please place your cursor in a normal paragraph.");
   }
-  while (current && text.length < x*0.95) {
+  while (current && text.length < maxLength*0.95) {
     if (current.getType() !== DocumentApp.ElementType.PARAGRAPH) break;
     // Stop if we hit a heading
     if (current.getHeading() !== DocumentApp.ParagraphHeading.NORMAL) break;
     const paraText = current.getText();
-    if ((text.length + paraText.length) > x) break;
+    if ((text.length + paraText.length) > maxLength) break;
     text += paraText + '\n';
     current = current.getNextSibling();
   }
