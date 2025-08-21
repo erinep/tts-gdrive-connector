@@ -109,10 +109,12 @@
     <textarea id="apikey" type="password" placeholder="update your key"></textarea><br />
     <button type="button" class="btn" onclick="saveKey()">Update Key</button>
     <!-- <button type="button" onclick="testConnection()">Test</button> -->
-    <button type="button" class="btn" onclick="showStatus()">Clear Status Msg</button>
   </details>
 
-  <div id="status"></div>
+  <div id="status">
+    <span id="statusText"></span>
+    <button type="button" class="toolbar-btn" onclick="showStatus()">↻</button>
+  </div>
 
   <?!= include('client/javascript'); ?>
   <?!= include('client/audio'); ?>

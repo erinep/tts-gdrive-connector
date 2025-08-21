@@ -77,6 +77,8 @@ textarea {
   border-top: 2px solid #ccc;
   background: white;
   position: fixed;
+  display: flex;
+  justify-content: space-between;
   bottom: 0;
   left: 0;
   width: 100%;
@@ -208,7 +210,7 @@ summary {
 
 .toolbar-btn:hover,
 .toolbar-btn:focus-visible,
-.toolbar-btn:active {
+.toolbar-btn:active{
   background: #e0e0e0;
 }
 
@@ -224,9 +226,11 @@ summary {
   cursor: pointer;
 }
 
+
 .btn:hover:not(:disabled),
 .btn:focus-visible:not(:disabled),
-.btn:active:not(:disabled) {
+.btn:active:not(:disabled),
+.status-btn:hover:not(:disabled) {
   background: #43914d;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
 }
