@@ -30,7 +30,7 @@
     }
     if (activePlayerIndex < audioPlayers.length) {
 
-      updatePreviewUI();
+      loadAudioUI();
       if (audioPlayers[activePlayerIndex].paused) {
         audioPlayers[activePlayerIndex].play();
       } else {
@@ -57,7 +57,7 @@
       
       // Reset to the beginning
       activePlayerIndex = 0;
-      updatePreviewUI();
+      loadAudioUI();
     } else {
       showStatus("No audio is currently playing", true);
     }
@@ -67,7 +67,7 @@
     if (activePlayerIndex !== null && activePlayerIndex < audioPlayers.length - 1) {
       audioPlayers[activePlayerIndex].pause();
       activePlayerIndex++;
-      updatePreviewUI();
+      loadAudioUI();
       audioPlayers[activePlayerIndex].currentTime = 0;
     } else {
       showStatus("No more chunks to play", true);
@@ -78,15 +78,41 @@
     if (activePlayerIndex !== null && activePlayerIndex > 0) {
       audioPlayers[activePlayerIndex].pause();
       activePlayerIndex--;
-      updatePreviewUI();
+      loadAudioUI();
       audioPlayers[activePlayerIndex].currentTime = 0;
     } else {
       showStatus("No previous chunk to play", true);
     }
   }
 
-  function updatePreviewUI() {
-    preview.textContent = audioPlayers[activePlayerIndex]._chunkText;;
+  function loadAudioProgressBar(audio) {
+    const progressBar = document.getElementById("progressBar");
+    const currentTimeLabel = document.getElementById("currentTime");
+    const totalTimeLabel = document.getElementById("totalTime");
+
+    progressBar.max = audio.duration;
+    totalTimeLabel.textContent = formatTime(audio.duration);
+
+    audio.addEventListener("timeupdate", () => {
+      progressBar.value = audio.currentTime;
+      currentTimeLabel.textContent = formatTime(audio.currentTime);
+    });
+
+    progressBar.addEventListener("input", () => {
+      audio.currentTime = progressBar.value;
+    });
+  }
+
+  function formatTime(sec) {
+    const m = Math.floor(sec / 60);
+    const s = Math.floor(sec % 60);
+    const ms = Math.floor((sec % 1) * 1000);
+    return `${m}:${s.toString().padStart(2,'0')}.${ms.toString().substring(0,2)}`;
+  }
+
+  function loadAudioUI() {
+    preview.textContent = audioPlayers[activePlayerIndex]._chunkText;
+    loadAudioProgressBar(audioPlayers[activePlayerIndex]);
   }
 
 </script>

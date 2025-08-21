@@ -121,6 +121,62 @@ summary {
   line-height: 1.1;
 }
 
+.audio-player-wrapper {
+  width: 90%;
+  max-width: 500px;
+  margin: 0;
+  background-color: #fafafa;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 12px;
+  gap: 10px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.audio-buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 10px;
+  background-color: none;
+  border: 0;
+}
+
+.audio-btn {
+  font-size: 1.2rem;
+  transition: all 0.2s ease;
+}
+
+.audio-btn:hover {
+  background-color: #e8e8e8;
+  transform: scale(1.1);
+}
+
+.audio-progress {
+  width: 100%;
+  height: 6px;
+  appearance: none;
+  background: #ddd;
+  border-radius: 3px;
+  outline: none;
+  margin-bottom: 8px;
+}
+
+.audio-progress::-webkit-slider-thumb {
+  appearance: none;
+  width: 12px;
+  height: 12px;
+  background: #333;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.audio-time {
+  text-align: center;
+  font-family: monospace;
+  font-size: 0.9rem;
+  color: #333;
+}
 
 .toolbar-buttons {
   display: flex;

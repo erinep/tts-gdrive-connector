@@ -28,14 +28,21 @@
       <source id="audioSource" src="" type="audio/mpeg">
       Your browser does not support the audio element.
     </audio> -->
-    <div id="chunkControls" class="toolbar-buttons">
-      <button id="prevChunkBtn" onClick="prevChunk()" class="toolbar-btn">⏮️</button>
-      <button id="PlayAllChunks" onClick="pausePlayChunks()" class="toolbar-btn">⏯️</button>
-      <button id="PlayAllChunks" onClick="stopChunks()" class="toolbar-btn">⏹️</button>
-      <button id="PlayAllChunks" onClick="restartActiveChunks()" class="toolbar-btn">🔄</button>
-      <button id="nextChunkBtn" onClick="nextChunk()" class="toolbar-btn">⏭️</button>
+    <div class="audio-player-wrapper">
+      <div id="chunkControls" class="audio-buttons">
+        <button id="prevChunkBtn" onClick="prevChunk()" class="audio-btn">⏮</button>
+        <button id="PlayAllChunks" onClick="pausePlayChunks()" class="audio-btn">⏯</button>
+        <button id="PlayAllChunks" onClick="stopChunks()" class="audio-btn">⏹</button>
+        <button id="PlayAllChunks" onClick="restartActiveChunks()" class="audio-btn">↻</button>
+        <button id="nextChunkBtn" onClick="nextChunk()" class="audio-btn">⏭</button>
+      </div>
+      <input type="range" id="progressBar" class="audio-progress" value="0" min="0" max="100" step="0.01" />
+      <div class="audio-time">
+        <span id="currentTime">0:00.00</span> / <span id="totalTime">0:00.00</span>
+      </div>
+      <p id="previewChunk"class="content">test!</p>
     </div>
-    <p id="previewChunk"class="content">test!</p>
+
   </details>
 
   <details class="menu-block">
