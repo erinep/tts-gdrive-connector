@@ -18,6 +18,17 @@
     audioPlayers = audioChunks.map(chunk => {
       const audio = new Audio(`data:${chunk.contentType};base64,${chunk.base64}`);
       audio._chunkText = chunk.text;
+
+      // AutoPlay next chunk when current on ends
+      audio.onended = () => {
+        if (activePlayerIndex < audioPlayers.length - 1) {
+          activePlayerIndex++;
+          loadAudioUI();
+          audioPlayers[activePlayerIndex].play();
+        } else {
+          showStatus("All chunks played");
+        }
+      };
       return audio;
     });
 
