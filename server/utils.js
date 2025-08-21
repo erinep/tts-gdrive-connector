@@ -30,8 +30,34 @@ function getTimeString() {
   return Utilities.formatDate(now, timezone, 'HH:mm:ss');
 }
 
+function normalizeText(text) {
+  return text
+    .normalize("NFKC") // Normalize Unicode (e.g. curly quotes, accented chars)
+    .replace(/[“”«»]/g, '"') // Replace smart double quotes with straight
+    .replace(/[‘’]/g, "'")   // Replace smart single quotes with straight
+    .replace(/\u00A0/g, " ") // Replace non-breaking spaces with regular
+    .replace(/\s+/g, " ")    // Collapse multiple spaces/tabs/newlines
+    .replace(/—/g, '-')               // Em dash → hyphen
+    .replace(/…/g, '...')             // Ellipsis → three dots
+    .replace(/\s+/g, ' ')             // Collapse whitespace
+    .trim();
+}
+
 function chunkTextBySentence(text, maxLength = 1000) {
-  const sentences = text.match(/[^.!?]+[.!?]+(?:\s+|$)/g) || [text];
+
+  const normalizedText = normalizeText(text);
+  if (normalizedText.length <= maxLength) {
+    return [normalizedText];
+  }
+
+  // Break text into sentences by matching:
+  // - one or more non-punctuation characters
+  // - followed by punctuation (., !, or ?)
+  // - followed by optional quotes
+  // - followed by whitespace or end of string
+  const sentenceRegex = /[^.!?]+[.!?]["'”’]*\s*/g;
+  const sentences = normalizedText.match(sentenceRegex) || [normalizedText]; 
+  
   let chunks = [];
   let current = "";
 
