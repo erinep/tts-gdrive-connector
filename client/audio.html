@@ -2,6 +2,10 @@
   let audioPlayers = [];
   let activePlayerIndex = null;
   let preview = document.getElementById("previewChunk");
+  let progressBar = document.getElementById("progressBar");
+  let currentTimeLabel = document.getElementById("currentTime");
+  const totalTimeLabel = document.getElementById("totalTime");
+  let activeChunkLabel = document.getElementById("activeChunk");
 
   function loadAudioChunks(audioChunks) {
     if (!audioChunks || audioChunks.length === 0) {
@@ -10,13 +14,14 @@
     }
 
     audioPlayers = []; // Reset audio players
-    activePlayerIndex = null; // Reset active player index
+    activePlayerIndex = 0; // Reset active player index
     audioPlayers = audioChunks.map(chunk => {
       const audio = new Audio(`data:${chunk.contentType};base64,${chunk.base64}`);
       audio._chunkText = chunk.text;
       return audio;
     });
 
+    loadAudioUI();
     showStatus(`${audioPlayers.length} audio files loaded`);
   }
   
@@ -25,9 +30,7 @@
 
 
   function pausePlayChunks() {
-    if (activePlayerIndex === null) {
-      activePlayerIndex = 0;
-    }
+
     if (activePlayerIndex < audioPlayers.length) {
 
       loadAudioUI();
@@ -43,7 +46,7 @@
   }
 
   function restartActiveChunks() {
-    if (activePlayerIndex !== null && audioPlayers[activePlayerIndex]) {
+    if (audioPlayers[activePlayerIndex]) {
       audioPlayers[activePlayerIndex].currentTime = 0;
     } else {
       showStatus("No audio is currently playing", true);
@@ -51,7 +54,7 @@
   }
 
   function stopChunks() {
-    if (activePlayerIndex !== null && audioPlayers[activePlayerIndex]) {
+    if (audioPlayers[activePlayerIndex]) {
       audioPlayers[activePlayerIndex].pause();
       audioPlayers[activePlayerIndex].currentTime = 0;
       
@@ -64,7 +67,7 @@
   }
 
   function nextChunk() {
-    if (activePlayerIndex !== null && activePlayerIndex < audioPlayers.length - 1) {
+    if (activePlayerIndex < audioPlayers.length - 1) {
       audioPlayers[activePlayerIndex].pause();
       activePlayerIndex++;
       loadAudioUI();
@@ -75,7 +78,7 @@
   } 
 
   function prevChunk() {
-    if (activePlayerIndex !== null && activePlayerIndex > 0) {
+    if (activePlayerIndex > 0) {
       audioPlayers[activePlayerIndex].pause();
       activePlayerIndex--;
       loadAudioUI();
@@ -86,9 +89,6 @@
   }
 
   function loadAudioProgressBar(audio) {
-    const progressBar = document.getElementById("progressBar");
-    const currentTimeLabel = document.getElementById("currentTime");
-    const totalTimeLabel = document.getElementById("totalTime");
 
     progressBar.max = audio.duration;
     totalTimeLabel.textContent = formatTime(audio.duration);
@@ -112,6 +112,7 @@
 
   function loadAudioUI() {
     preview.textContent = audioPlayers[activePlayerIndex]._chunkText;
+    activeChunkLabel.textContent = `Chunk ${activePlayerIndex + 1} of ${audioPlayers.length}`;
     loadAudioProgressBar(audioPlayers[activePlayerIndex]);
   }
 
