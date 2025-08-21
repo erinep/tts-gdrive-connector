@@ -90,8 +90,15 @@
 
   function loadAudioProgressBar(audio) {
 
-    progressBar.max = audio.duration;
-    totalTimeLabel.textContent = formatTime(audio.duration);
+    if (!audio.duration){
+      audio.onloadedmetadata = () => {
+        progressBar.max = audio.duration;
+        totalTimeLabel.textContent = formatTime(audio.duration);
+      };
+    } else {
+      progressBar.max = audio.duration;
+      totalTimeLabel.textContent = formatTime(audio.duration);
+    }
 
     audio.addEventListener("timeupdate", () => {
       progressBar.value = audio.currentTime;
