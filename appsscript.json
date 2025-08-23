@@ -1,6 +1,14 @@
 {
   "timeZone": "America/Toronto",
-  "dependencies": {},
+  "dependencies": {
+    "libraries": [
+      {
+        "userSymbol": "OAuth2",
+        "version": "43",
+        "libraryId": "1B7FSrk5Zi6L1rSxxTDgDEUsPzlukDsi4KGuTMorsTQHhGBzBkMun4iDF"
+      }
+    ]
+  },
   "exceptionLogging": "STACKDRIVER",
   "runtimeVersion": "V8",
   "oauthScopes": [
@@ -11,7 +19,8 @@
   ],
   "urlFetchWhitelist": [
     "https://api.elevenlabs.io/",
-    "https://texttospeech.googleapis.com/"
+    "https://texttospeech.googleapis.com/",
+    "https://oauth2.googleapis.com/token"
   ],
   "addOns": {
     "common": {

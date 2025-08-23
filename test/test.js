@@ -3,6 +3,16 @@ function permissionCall() {
   DriveApp.getRootFolder(); // forces permission request
 }
 
+function oAuthorize() {
+  const service = getOAuthService();
+  if (!service.hasAccess()) {
+    const authorizationUrl = service.getAuthorizationUrl();
+    Logger.log('Open the following URL and re-run the script: %s', authorizationUrl);
+  } else {
+    Logger.log('Already authorized!');
+  }
+}
+
 
 function testSimpleFile() {
   const file = DriveApp.createFile("test-file.txt", "hello world");
