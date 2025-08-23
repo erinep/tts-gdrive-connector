@@ -33,17 +33,21 @@ async function fetchAudioBase64(text, voice, locale, speed) {
   } else if (serve === "eleven_labs"){
 
     // Chunk the text before sending
-    const chunks = chunkTextBySentence(text, 1000);
+    const chunks = chunkTextBySentence(text, 100);
     const audioChunks = [];
 
     for (let i = 0; i < chunks.length; i++) {
-      const chunk = chunks[i];
-      const base64Audio = await el_callTextToSpeech(chunk, voice);
+      let textValues = {
+        current: chunks[i],
+        previous: i > 0 ? chunks[i - 1] : null,
+        next: i < chunks.length - 1 ? chunks[i + 1] : null
+      }
+      const base64Audio = await el_callTextToSpeech(textValues, voice);
       audioChunks.push({
         base64: base64Audio.base64,
         contentType: base64Audio.contentType,
         voice: voice,
-        text: chunk,
+        text: textValues.current,
         provider: serve,
         index: i
       });

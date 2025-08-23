@@ -5,10 +5,21 @@ function el_getModels(){
   return EL_MODELS;
 }
 
-function el_callTextToSpeech(text, voice) {
+function el_callTextToSpeech(textValues, voice) {
   const apiKey = getApiKeyForUser();
   const payload = {
-    "text": text,
+    "text": textValues.current,
+    "previous_text": textValues.previous,
+    "next_text": textValues.next,
+    "previous_request_ids": null,
+    "next_request_ids": null,
+    "voice_settings": {
+      "stability": null,
+      "similarity_boost": null,
+      "use_speaker_boost": false,
+      "style": null,
+      "speed": 1.0
+    },
     "model_id": "eleven_turbo_v2",
   };
   const res = UrlFetchApp.fetch(`https://api.elevenlabs.io/v1/text-to-speech/${voice}`, {
