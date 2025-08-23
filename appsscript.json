@@ -20,7 +20,8 @@
   "urlFetchWhitelist": [
     "https://api.elevenlabs.io/",
     "https://texttospeech.googleapis.com/",
-    "https://oauth2.googleapis.com/token"
+    "https://oauth2.googleapis.com/token",
+    "https://storage.googleapis.com/upload/storage/v1/b/tts-bucket-v0/o"
   ],
   "addOns": {
     "common": {

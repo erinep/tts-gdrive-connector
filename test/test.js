@@ -19,7 +19,17 @@ function testSimpleFile() {
   Logger.log("Created: " + file.getUrl());
 }
 
-function testStoreAudio() {
+function testUploadToGCS() {
+  try {
+    const base64 = sampleBase64.split(',')[1]; // Remove data URL prefix if present
+    const response = uploadBase64ToGCS(base64, "i-lost-my-glasses.mp3");
+    Logger.log("Upload response: " + JSON.stringify(response));
+  } catch (e) {
+    Logger.log("Error during upload: " + e.message);
+  }
+}
+
+function testStoreAudioToGDrive() {
   const base64Obj = {
     base64: sampleBase64,
     contentType: 'audio/mpeg'
