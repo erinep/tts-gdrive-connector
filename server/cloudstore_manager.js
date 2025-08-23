@@ -1,9 +1,7 @@
 
 function uploadBase64ToGCS(base64String, fileName) {
-  const service = getOAuthService();
-  if (!service.hasAccess()) {
-    throw new Error('Authorization required. Run authorize() first.');
-  }
+  // Function to get OAuth token using service account credentials
+  const token = getAccessTokenFromServiceAccount();
 
   // Decode base64 string to bytes
   const bytes = Utilities.base64Decode(base64String);
@@ -18,7 +16,7 @@ function uploadBase64ToGCS(base64String, fileName) {
     contentType: 'application/octet-stream',
     payload: bytes,
     headers: {
-      Authorization: 'Bearer ' + service.getAccessToken(),
+      Authorization: 'Bearer ' + token,
     },
     muteHttpExceptions: true
   };
