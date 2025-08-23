@@ -3,15 +3,6 @@ function permissionCall() {
   DriveApp.getRootFolder(); // forces permission request
 }
 
-function oAuthorize() {
-  const service = getOAuthService();
-  if (!service.hasAccess()) {
-    const authorizationUrl = service.getAuthorizationUrl();
-    Logger.log('Open the following URL and re-run the script: %s', authorizationUrl);
-  } else {
-    Logger.log('Already authorized!');
-  }
-}
 
 
 function testSimpleFile() {
@@ -22,7 +13,7 @@ function testSimpleFile() {
 function testUploadToGCS() {
   try {
     const base64 = sampleBase64.split(',')[1]; // Remove data URL prefix if present
-    const response = uploadBase64ToGCS(base64, "i-lost-my-glasses.mp3");
+    const response = uploadBase64ToGCS(base64);
     Logger.log("Upload response: " + JSON.stringify(response));
   } catch (e) {
     Logger.log("Error during upload: " + e.message);
