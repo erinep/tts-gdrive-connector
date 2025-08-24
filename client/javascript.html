@@ -109,7 +109,7 @@
           div.classList.remove("loading");
           reject(new Error(msg));
         })
-        .addBase64ToDrive(audioChunks, metaData);
+        .audioStorageHandler(audioChunks);
     });
   }
 

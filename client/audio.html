@@ -80,9 +80,10 @@
   function nextChunk() {
     if (activePlayerIndex < audioPlayers.length - 1) {
       audioPlayers[activePlayerIndex].pause();
-      activePlayerIndex++;
-      loadAudioUI();
       audioPlayers[activePlayerIndex].currentTime = 0;
+      activePlayerIndex++;
+      audioPlayers[activePlayerIndex].currentTime = 0;
+      loadAudioUI();
     } else {
       showStatus("No more chunks to play", true);
     }
@@ -91,9 +92,10 @@
   function prevChunk() {
     if (activePlayerIndex > 0) {
       audioPlayers[activePlayerIndex].pause();
-      activePlayerIndex--;
-      loadAudioUI();
       audioPlayers[activePlayerIndex].currentTime = 0;
+      activePlayerIndex--;
+      audioPlayers[activePlayerIndex].currentTime = 0;
+      loadAudioUI();
     } else {
       showStatus("No previous chunk to play", true);
     }
