@@ -59,17 +59,24 @@ async function fetchAudio() {
     }
 
     audioChunks.push({
-      provider: tts_server,
       index: chunk.index,
-      voice: input.voice,
       text: chunk.textValues.current,
       base64: audioObject.base64,
       contentType: audioObject.contentType,
     })
   } 
 
+
+
   Logger.log("Returned %s audio chunks, ", audioChunks.length);
-  return audioChunks;
+  return {
+    sessionId:  new Date().toISOString().slice(2,19).replace(/\D/g,''),
+    provider: tts_server,
+    voice: input.voice,
+    document: getDocFileName(),
+    audioChunkCount: audioChunks.length,
+    audioChunks: audioChunks
+  }
 }
 
 function test_tts_connection() {

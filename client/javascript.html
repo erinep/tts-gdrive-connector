@@ -48,7 +48,8 @@
       toggleBtnDisabled(true);
 
       await setUserInputs();
-      const audioChunks = await fetchAudio();
+      const packet = await fetchAudio();
+      const audioChunks= packet.audioChunks;
 
       loadAudioChunks(audioChunks);
 
