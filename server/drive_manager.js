@@ -49,12 +49,6 @@ function buildHistoryJSON(audioChunks, files){
 }
 
 
-function audioFileName(voice, index){
-  const d = getDocFileName().replace(/[^a-zA-Z0-9]/g, '');
-  const filename = `${d.substring(0,4)}_${voice.substring(0,10)}_Chunk${String(index).padStart(2, '0')}.mp3`;
-  return filename
-}
-
 function addBase64ToDrive(audioChunks) {
   const rootFolder = getOrCreateAppFolder();
   const sessionfolder = rootFolder.createFolder(`Session_${new Date().toISOString()}`);

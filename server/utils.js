@@ -72,3 +72,10 @@ function chunkTextBySentence(text, maxLength = 1000) {
   if (current.trim().length > 0) chunks.push(current.trim());
   return chunks;
 }
+
+function audioFileName(voice, index){
+  const d = getDocFileName().replace(/[^a-zA-Z0-9]/g, '');
+  const timestamp = new Date().toISOString().slice(2,19).replace(/\D/g,'')
+  const filename = `${timestamp}_Chunk${String(index).padStart(2, '0')}.mp3`;
+  return filename
+}

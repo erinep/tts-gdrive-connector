@@ -20,6 +20,20 @@ function testUploadToGCS() {
   }
 }
 
+function testDownloadFromGCS() { 
+  const bucketName = 'tts-bucket-v0';
+  const objectName = 'i-lost-my-glasses.mp3';
+  const blob = downloadFileFromGCS(bucketName, objectName);
+  Logger.log("Downloaded file size: " + blob.getBytes().length + " bytes");
+}
+
+function testGetSignedUrl() { 
+  const bucketName = 'tts-bucket-v0';
+  const objectName = 'i-lost-my-glasses.mp3';
+  const url = getSignedUrl(bucketName, objectName, 3600);
+  Logger.log("link to file: " + url);
+}
+
 function testStoreAudioToGDrive() {
   const base64Obj = {
     base64: sampleBase64,
