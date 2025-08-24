@@ -1,10 +1,9 @@
-const TO_GOOGLE_DRIVE = false;
-const TO_GCS = true;
 
-function audioStorageHandler(audioChunks) {
+function audioStorageHandler(audioChunks, SERVICE_FOR_STORAGE) {
+  if (!audioChunks || audioChunks.length === 0) throw new Error("No audio chunks found.");
 
-  if (TO_GOOGLE_DRIVE === true) return addBase64ToDrive(audioChunks);
-  if (TO_GCS === true) {
+  if (SERVICE_FOR_STORAGE === "drive") return addBase64ToDrive(audioChunks);
+  if (SERVICE_FOR_STORAGE === "gcs"){
 
     const savedFiles = [];
 
@@ -23,7 +22,5 @@ function audioStorageHandler(audioChunks) {
     };
   };
 
-  if (!TO_GOOGLE_DRIVE && !TO_GCS){
-    throw new Error('No storage method selected.');
-  }
+  throw new Error('No storage method selected.');
 }

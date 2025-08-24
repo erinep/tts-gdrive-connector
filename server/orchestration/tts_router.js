@@ -10,7 +10,16 @@ function setCurrentService(value) {
   else throw new Error("service id '" + value + "' not found.");
 }
 
-async function fetchAudioBase64(text, voice, locale, speed) {
+function fetchAudio(){
+  const storage = "gsc"; // or "drive"
+  const data = getInputData();
+
+  return fetchAudioBase64(data);
+  // audioStorageHandler(storage);
+}
+
+
+async function fetchAudioBase64({text, voice, locale, speed}) {
   const apiKey = getApiKeyForUser();
   if (!apiKey) throw new Error ("API key missing");  
   if (!text|| text === '(No text selected)') throw new Error ("No Text selected");
@@ -36,6 +45,7 @@ async function fetchAudioBase64(text, voice, locale, speed) {
     const chunks = chunkTextBySentence(text, 100);
     const audioChunks = [];
 
+    //TODO: seperate chunking logic from tts call logic
     for (let i = 0; i < chunks.length; i++) {
       let textValues = {
         current: chunks[i],

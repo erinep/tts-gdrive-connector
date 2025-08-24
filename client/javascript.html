@@ -47,10 +47,7 @@
     try {
       toggleBtnDisabled(true);
 
-      const { text, voice, locale, speed } = getUserInputs();
-      showStatus("Requesting audio...");
-
-      const audioChunks = await fetchAudio(text, voice, locale, speed);
+      const audioChunks = await fetchAudio();
 
       loadAudioChunks(audioChunks);
 
@@ -65,6 +62,13 @@
     } finally {
       toggleBtnDisabled(false);
     }
+  }
+
+  async function setUserInputs(){
+    const inputs = getUserInputs();
+    await google.script.run
+      .withFailureHandler(e => showStatus(e.message, true))
+      .setInputData(inputs);
   }
 
   function getUserInputs() {
@@ -87,7 +91,7 @@
       google.script.run
         .withSuccessHandler(resolve)
         .withFailureHandler(reject)
-        .fetchAudioBase64(text, voice, locale, speed);
+        .fetchAudio();
     });
   }
 
@@ -109,7 +113,7 @@
           div.classList.remove("loading");
           reject(new Error(msg));
         })
-        .audioStorageHandler(audioChunks);
+        .audioStorageHandler(audioChunks, "gcs");
     });
   }
 

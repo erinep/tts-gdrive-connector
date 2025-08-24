@@ -5,6 +5,26 @@
  * selected text, and paragraphs up to a specified length.
 */
 
+function setInputData(inputs){
+  PropertiesService.getUserProperties().setProperties(
+    {
+      voice: inputs.voice || '',
+      locale: inputs.locale || '',
+      speed: inputs.speed || '',
+      text: inputs.text || ''}
+  );
+}
+
+function getInputData(){
+  const props = PropertiesService.getUserProperties().getProperties();
+  return {
+    voice: props.voice || '',
+    locale: props.locale || '',
+    speed: props.speed || '',
+    text: props.text || ''
+  };
+}
+
 function getCurrentParagraphText() {
   const doc = DocumentApp.getActiveDocument();
   const cursor = doc.getCursor();
