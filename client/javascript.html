@@ -47,6 +47,7 @@
     try {
       toggleBtnDisabled(true);
 
+      await setUserInputs();
       const audioChunks = await fetchAudio();
 
       loadAudioChunks(audioChunks);
@@ -65,13 +66,20 @@
   }
 
   async function setUserInputs(){
-    const inputs = getUserInputs();
-    await google.script.run
-      .withFailureHandler(e => showStatus(e.message, true))
-      .setInputData(inputs);
+    const inputs = getUserInputsFromDOM();
+
+    return new Promise( (resolve, reject) => {
+       google.script.run
+        .withSuccessHandler(resolve)
+        .withFailureHandler(e => {
+          showStatus(e.message, true);
+          reject(e);
+        })
+        .setInputData(inputs);
+    });
   }
 
-  function getUserInputs() {
+  function getUserInputsFromDOM() {
     return {
       text: document.getElementById("selectedBox").innerText,
       voice: document.getElementById("voiceList").value,
