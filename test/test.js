@@ -3,6 +3,36 @@ function permissionCall() {
   DriveApp.getRootFolder(); // forces permission request
 }
 
+const assert = (condition, message) => {
+  if (!condition) throw new Error("❌ " + message);
+  console.log("✅ " + message);
+};
+
+
+function LogSentances(text){
+
+  let sentences = chunkTextBySentence(text,100)
+  Logger.log('sentence count : '+ sentences.length)
+
+
+  for (let i=0 ; i < sentences.length; i++){
+    Logger.log("%s: %s", i, sentences[i])
+  }
+}
+
+
+
+function testChunkTextBySentence() {
+
+  // Test 1: Short sentence under limit
+  let result = chunkTextBySentence("This is short.", 100);
+  assert(result.length === 1, "Short text returns 1 chunk");
+
+  // Test 2: Multiple sentences with punctuation
+  result = chunkTextBySentence("This is sentence one. This is sentence two. This is sentence three.", 30);
+  assert(result.length > 1, "Multiple sentences are chunked correctly");
+}
+
 
 
 function testSimpleFile() {
