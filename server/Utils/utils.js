@@ -25,15 +25,16 @@ function toBase64Obj(blob) {
 }
 
 function getTimeString() {
-  const now = new Date();
-  const timezone = Session.getScriptTimeZone(); // Use your script's timezone
-  return Utilities.formatDate(now, timezone, 'HH:mm:ss');
+  return new Date().toISOString().slice(2,19).replace(/T/g,'_');
 }
 
+function createSessionID(){
+  return "session_" + getTimeString();
+}
 
-function audioFileName(voice, index){
+function audioFileName(index){
   const d = getDocFileName().replace(/[^a-zA-Z0-9]/g, '');
-  const timestamp = new Date().toISOString().slice(2,19).replace(/\D/g,'')
+  const timestamp = getTimeString();
   // @ts-ignore
   const filename = `${timestamp}_Chunk${String(index).padStart(2, '0')}.mp3`;
   return filename

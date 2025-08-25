@@ -13,8 +13,9 @@
     "https://api.elevenlabs.io/",
     "https://texttospeech.googleapis.com/",
     "https://oauth2.googleapis.com/token",
-    "https://storage.googleapis.com/upload/storage/v1/b/tts-bucket-v0/o",
-    "https://storage.googleapis.com/storage/v1/b/tts-bucket-v0/o"
+    "https://storage.googleapis.com/upload/storage/v1/b/tts-bucket-v1/o",
+    "https://storage.googleapis.com/storage/v1/b/tts-bucket-v1/o",
+    "https://firestore.googleapis.com/v1/projects/cats-468102/databases/(default)/documents/"
   ],
   "addOns": {
     "common": {

@@ -11,8 +11,24 @@ function setCurrentService(value) {
 }
 
 
-
-async function fetchAudio() {
+/**
+ * @typedef {Object} AudioChunksSession
+ * @property {string} sessionId - Unique ID for the session.
+ * @property {string} provider - TTS provider (e.g., "google-tts", "eleven_labs").
+ * @property {string} voice - Voice ID used for the session.
+ * @property {string} gdoc_details - Source Google Doc name or ID.
+ * @property {number} audioChunkCount - Total number of audio chunks.
+ * @property {AudioChunk[]} audioChunks - Array of audio chunk objects.
+ * 
+ * @typedef {Object} AudioChunk 
+ * @prop {string} base64
+ * @prop {number} index
+ * @prop {string} contentType
+ * @prop {string} text
+ * 
+ * @return {AudioChunksSession}
+ */
+function fetchAudio() {
   const apiKey = getApiKeyForUser();
   const input = getInputData();
   const tts_server = getCurrentService();
@@ -70,10 +86,10 @@ async function fetchAudio() {
 
   Logger.log("Returned %s audio chunks, ", audioChunks.length);
   return {
-    sessionId:  new Date().toISOString().slice(2,19).replace(/\D/g,''),
+    sessionId:  createSessionID(),
     provider: tts_server,
     voice: input.voice,
-    document: getDocFileName(),
+    gdoc_details: getDocFileName(),
     audioChunkCount: audioChunks.length,
     audioChunks: audioChunks
   }

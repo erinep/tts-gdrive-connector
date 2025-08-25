@@ -20,6 +20,22 @@ function LogSentances(text){
   }
 }
 
+function testWriteToFirestore(){
+  const testData = {
+    session_id: "TEST-" + createSessionID(),
+    index: 1,
+    text: "where did i put my glasses.",
+    voice: "VOICEID_GOES_HERE",
+    media: {
+      bucket: "tts-bucket-v1",
+      filename: "i-lost-my-glasses.mp3"
+    },
+    gdoc_details: "1A2B3C4D5E_fakeDocID",
+    provider: "eleven_labs"
+  };
+
+  writeToFirestore(testData);
+}
 
 
 function testChunkTextBySentence() {
@@ -43,7 +59,8 @@ function testSimpleFile() {
 function testUploadToGCS() {
   try {
     const base64 = sampleBase64.split(',')[1]; // Remove data URL prefix if present
-    const response = uploadBase64ToGCS(base64);
+    const filename = "i-lost-my-glasses.mp3";
+    const response = uploadBase64ToGCS(base64, filename);
     Logger.log("Upload response: " + JSON.stringify(response));
   } catch (e) {
     Logger.log("Error during upload: " + e.message);

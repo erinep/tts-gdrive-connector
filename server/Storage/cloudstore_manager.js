@@ -1,4 +1,12 @@
+const BUCKET_NAME = "tts-bucket-v1"
 
+/**
+ * 
+ * @param {string} base64String 
+ * @param {string} fileName 
+ * @returns {{bucketName: string, objectName: string}}
+ * 
+ */
 function uploadBase64ToGCS(base64String, fileName) {
   // Function to get OAuth token using service account credentials
   const token = getAccessTokenFromServiceAccount();
@@ -9,8 +17,7 @@ function uploadBase64ToGCS(base64String, fileName) {
   const bytes = Utilities.base64Decode(base64String);
 
   // Prepare the upload URL for your bucket
-  const bucketName = 'tts-bucket-v0';
-  const url = `https://storage.googleapis.com/upload/storage/v1/b/${bucketName}/o?uploadType=media&name=${encodeURIComponent(fileName)}`;
+  const url = `https://storage.googleapis.com/upload/storage/v1/b/${BUCKET_NAME}/o?uploadType=media&name=${encodeURIComponent(fileName)}`;
 
   // Make the POST request with OAuth token and binary data
   const options = {
@@ -40,10 +47,15 @@ function uploadBase64ToGCS(base64String, fileName) {
   }
 }
 
-function downloadFileFromGCS(bucketName, objectName) {
+/**
+ * 
+ * @param {string} objectName 
+ * @returns {blob}
+ */
+function downloadFileFromGCS(objectName) {
   const token = getAccessTokenFromServiceAccount();
 
-  const url = `https://storage.googleapis.com/storage/v1/b/${bucketName}/o/${encodeURIComponent(objectName)}?alt=media`;
+  const url = `https://storage.googleapis.com/storage/v1/b/${BUCKET_NAME}/o/${encodeURIComponent(objectName)}?alt=media`;
 
   const response = UrlFetchApp.fetch(url, {
     method: 'GET',
@@ -61,8 +73,13 @@ function downloadFileFromGCS(bucketName, objectName) {
   return blob;
 }
 
-
-function getSignedUrl(bucketName, objectName, expirationInSeconds) {
+/**
+ * 
+ * @param {string} objectName 
+ * @param {number} expirationInSeconds 
+ * @returns {string}
+ */
+function getSignedUrl(objectName, expirationInSeconds) {
   const serviceAccount = getServiceAccountKey();
   const clientEmail = serviceAccount.client_email;
   const privateKey = serviceAccount.private_key;
@@ -71,7 +88,7 @@ function getSignedUrl(bucketName, objectName, expirationInSeconds) {
   const verb = 'GET';
   const contentMd5 = '';
   const contentType = '';
-  const canonicalizedResource = `/` + bucketName + `/` + objectName;
+  const canonicalizedResource = `/` + BUCKET_NAME + `/` + objectName;
 
   const stringToSign = [
     verb,

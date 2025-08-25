@@ -39,7 +39,10 @@ function getAccessTokenFromServiceAccount() {
 
   const payload = {
     iss: key.client_email,
-    scope: "https://www.googleapis.com/auth/devstorage.read_write",
+    scope: [
+      "https://www.googleapis.com/auth/devstorage.read_write",
+      "https://www.googleapis.com/auth/datastore"
+    ].join(" "),
     aud: "https://oauth2.googleapis.com/token",
     iat: iat,
     exp: exp

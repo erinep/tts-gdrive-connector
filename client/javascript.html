@@ -54,7 +54,7 @@
       loadAudioChunks(audioChunks);
 
       showStatus("Storing audio...");
-      const driveDetails = await storeAudio(audioChunks);
+      const driveDetails = await storeAudio(packet);
 
       updateHistoryUI(driveDetails);
 
