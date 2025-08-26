@@ -13,7 +13,7 @@
 function writeSessionToFirestore({ sessionId, voice, provider, gdoc_details, audioChunkCount }) {
   const token = getAccessTokenFromServiceAccount();
   const projectId = PropertiesService.getScriptProperties().getProperty("PROJECT_ID");
-  const url = `https://firestore.googleapis.com/v1/projects/${projectId}/databases/(default)/documents/${sessionId}/metadata`;
+  const url = `https://firestore.googleapis.com/v1/projects/${projectId}/databases/(default)/documents/sessions/${sessionId}`;
 
   const payload = {
     fields: {
@@ -49,7 +49,7 @@ function writeChunkToFirestore( audio) {
   const token = getAccessTokenFromServiceAccount();
   const projectId = PropertiesService.getScriptProperties().getProperty("PROJECT_ID");
   const chunkId = `Chunk_${String(audio.index).padStart(2, "0")}`;
-  const url = `https://firestore.googleapis.com/v1/projects/${projectId}/databases/(default)/documents/${audio.sessionId}/${chunkId}`;
+  const url = `https://firestore.googleapis.com/v1/projects/${projectId}/databases/(default)/documents/sessions/${audio.sessionId}/chunks/${chunkId}`;
 
   const payload = {
     fields: {
