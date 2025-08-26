@@ -47,3 +47,12 @@ function audioStorageHandler( data, SERVICE_FOR_STORAGE) {
 
   throw new Error('No storage method selected.');
 }
+
+function getSession(sessionId){
+  const chunks = getFirestoreChunks(sessionId)
+  const audio = []
+  for (let chunk of chunks) {
+    audio.push(downloadFileFromGCS(chunk.filename));
+  }
+  return audio;
+}

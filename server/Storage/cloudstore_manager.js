@@ -50,7 +50,7 @@ function uploadBase64ToGCS(base64String, fileName) {
 /**
  * 
  * @param {string} objectName 
- * @returns {blob}
+ * @returns {{base64: string, contentType: string}}
  */
 function downloadFileFromGCS(objectName) {
   const token = getAccessTokenFromServiceAccount();
@@ -70,7 +70,7 @@ function downloadFileFromGCS(objectName) {
   }
 
   const blob = response.getBlob();
-  return blob;
+  return toBase64Obj(blob);
 }
 
 /**

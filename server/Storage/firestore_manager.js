@@ -21,7 +21,6 @@ function writeSessionToFirestore({ sessionId, voice, provider, gdoc_details, aud
       provider: { stringValue: provider },
       gdoc_details: { stringValue: gdoc_details },
       totalChunks: { integerValue: audioChunkCount.toString() },
-      created: { timestampValue: new Date().toISOString() }
     }
   };
 
@@ -55,16 +54,67 @@ function writeChunkToFirestore( audio) {
     fields: {
       text: { stringValue: audio.text },
       chunk_index: { integerValue: audio.index.toString() },
-      created: { timestampValue: new Date().toISOString() },
       bucket: { stringValue: audio.bucket },
       filename: { stringValue: audio.filename }
       }
     }
 
-  UrlFetchApp.fetch(url, {
+  const response = UrlFetchApp.fetch(url, {
     method: 'patch',
     contentType: 'application/json',
     headers: { Authorization: `Bearer ${token}` },
     payload: JSON.stringify(payload)
   });
+  Logger.log(response.getContentText());
+}
+
+
+/**
+ * 
+ * @param {string} sessionId 
+ * @returns {ChunkMetadata[]}
+ */
+function getFirestoreChunks(sessionId) {
+  const projectId = PropertiesService.getScriptProperties().getProperty("PROJECT_ID");
+  const accessToken = getAccessTokenFromServiceAccount();
+  
+  const url = `https://firestore.googleapis.com/v1/projects/${projectId}/databases/(default)/documents/sessions/${sessionId}/chunks`;
+  
+  const options = {
+    method: 'get',
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+    muteHttpExceptions: true,
+  };
+  
+  const response = UrlFetchApp.fetch(url, options);
+  const statusCode = response.getResponseCode();
+  
+  if (statusCode === 200) {
+    const json = JSON.parse(response.getContentText());
+    
+    if (json.documents){
+      return json.documents.map(d => ({
+        ...cleanAudioChunkMetadata(d.fields),
+        sessionId: sessionId,
+      }))
+    }
+    throw new Error (`no documents found in the session`);
+  } else  {
+    throw new Error (`message: ${response.getContentText()}`)
+  }
+}
+
+/**
+ * 
+ * @param {{filename: object, chunk_index: object, bucket: object, text: object}} rawChunk 
+ */
+function cleanAudioChunkMetadata(rawChunk) {
+  return {
+    filename: rawChunk.filename.stringValue,
+    chunk_index: rawChunk.chunk_index.integerValue,
+    bucket: rawChunk.bucket.stringValue,
+    text: rawChunk.bucket.stringValue,
+  }
 }
