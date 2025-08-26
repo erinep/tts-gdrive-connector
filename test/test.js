@@ -20,6 +20,11 @@ function LogSentances(text){
   }
 }
 
+function testGCSDownload() {
+  const blob = downloadFileFromGCS("i-lost-my-glasses.mp3");
+  assert (blob.getContentType() === "audio/mpeg", "content is of type 'audio/mpeg'");
+}
+
 function testWriteToFirestore(){
   const testData = {
     session_id: "TEST-" + createSessionID(),
