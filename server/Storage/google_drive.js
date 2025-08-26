@@ -1,11 +1,6 @@
 const SERVICE_FOLDER_NAME = "text_to_speech"
 
 
-function getDocFileName() {
-  const fileName = DocumentApp.getActiveDocument().getName();
-  return fileName;
-}
-
 function getOrCreateAppFolder() {
   let folderId = PropertiesService.getUserProperties().getProperty('appFolderId');
   Logger.log("UserPropery `appFolderId` is " + folderId)

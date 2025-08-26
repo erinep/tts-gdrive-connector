@@ -5,6 +5,11 @@
  * selected text, and paragraphs up to a specified length.
 */
 
+function getDocFileName() {
+  const fileName = DocumentApp.getActiveDocument().getName();
+  return fileName;
+}
+
 function setInputData(inputs){
   PropertiesService.getUserProperties().setProperties(
     {
