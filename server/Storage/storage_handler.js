@@ -52,7 +52,11 @@ function getSession(sessionId){
   const chunks = getFirestoreChunks(sessionId)
   const audio = []
   for (let chunk of chunks) {
-    audio.push(downloadFileFromGCS(chunk.filename));
+    audio.push({
+      ...downloadFileFromGCS(chunk.filename),
+      text: chunk.text,
+      index: chunk.index
+    });
   }
-  return audio;
+  return audio.sort((a,b) => a.index - b.index);
 }

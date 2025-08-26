@@ -53,7 +53,7 @@ function writeChunkToFirestore( audio) {
   const payload = {
     fields: {
       text: { stringValue: audio.text },
-      chunk_index: { integerValue: audio.index.toString() },
+      index: { integerValue: audio.index.toString() },
       bucket: { stringValue: audio.bucket },
       filename: { stringValue: audio.filename }
       }
@@ -108,12 +108,12 @@ function getFirestoreChunks(sessionId) {
 
 /**
  * 
- * @param {{filename: object, chunk_index: object, bucket: object, text: object}} rawChunk 
+ * @param {{filename: object, index: object, bucket: object, text: object}} rawChunk 
  */
 function cleanAudioChunkMetadata(rawChunk) {
   return {
     filename: rawChunk.filename.stringValue,
-    chunk_index: rawChunk.chunk_index.integerValue,
+    index: rawChunk.index.integerValue,
     bucket: rawChunk.bucket.stringValue,
     text: rawChunk.bucket.stringValue,
   }

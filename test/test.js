@@ -47,14 +47,14 @@ function testWriteChunkToFirestore() {
     sessionId: "TEST",
     index: 0,
     text: "test text",
-    filename: "test.mp3",
+    filename: "i-lost-my-glasses.mp3",
     bucket: "tts-bucket-v1"
   }
   const testChunkData1 = {
     sessionId: "TEST",
     index: 1,
     text: "test text",
-    filename: "test.mp3",
+    filename: "i-lost-my-glasses.mp3",
     bucket: "tts-bucket-v1"
   }
   writeChunkToFirestore(testChunkData0);
