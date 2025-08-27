@@ -2,12 +2,45 @@
 
   function updateHistoryUI(details) {
     const div = document.getElementById("histDiv");
-    const anchor = document.createElement("a");
-    anchor.classList.add("historyLink");
-    anchor.target = "_blank";
-    anchor.href = details.file_url;
-    anchor.innerText = details.file_name;
-    div.appendChild(anchor);
+
+    let links = false;
+    let buttons = true;
+
+    if (links) {
+      const anchor = document.createElement("a");
+      anchor.classList.add("historyLink");
+      anchor.target = "_blank";
+      anchor.href = details.file_url;
+      anchor.innerText = details.file_name;
+      div.appendChild(anchor);
+
+    } else if (buttons){
+
+      const button = document.createElement("button");
+      button.classList.add("toolbar-btn");
+      button.innerText = details.sessionId;
+      button.onclick = async function () {
+        const audioChunks = await fetchSessionAudio(details.sessionId);
+        loadAudioChunks(audioChunks);
+      };
+      div.appendChild(button);
+
+    }
+  }
+
+  function fetchSessionAudio (id) {
+    return new Promise ((resolve, reject) => {
+      google.script.run
+        .withSuccessHandler(d => {
+          showStatus(d.message);
+          resolve(d);
+        }).withFailureHandler(e => {
+
+          showStatus(e.message, true);
+          reject(new Error(e.message));
+        
+        }).getSession(id);
+    })
   }
 
 </script>

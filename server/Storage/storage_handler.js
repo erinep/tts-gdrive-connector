@@ -1,7 +1,7 @@
 /**
  * @param {AudioChunksSession} data
  * @param {string} SERVICE_FOR_STORAGE 
- * @returns {{message: string, file_url: string, file_name: string}}
+ * @returns {{message: string, sessionId?: string, file_url?: string, file_name?: string}}
  */
 function audioStorageHandler( data, SERVICE_FOR_STORAGE) {
 
@@ -34,15 +34,12 @@ function audioStorageHandler( data, SERVICE_FOR_STORAGE) {
         index: chunk.index,
         text: chunk.text
       });
-
     }
 
-    const url = getSignedUrl(savedFiles[0].objectName, 15 * 60);
-    return {
+    return { 
       message: `Saved ${savedFiles.length} audio chunk(s) to Google Cloud.`,
-      file_url: url,
-      file_name: "downaload file",
-    };
+      sessionId: data.sessionId,
+    }
   };
 
   throw new Error('No storage method selected.');

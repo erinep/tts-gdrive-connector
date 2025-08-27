@@ -54,11 +54,11 @@
       loadAudioChunks(audioChunks);
 
       showStatus("Storing audio...");
-      const driveDetails = await storeAudio(packet);
+      const sessionDetails = await storeAudio(packet);
 
-      updateHistoryUI(driveDetails);
+      updateHistoryUI(sessionDetails);
 
-      showStatus(driveDetails.message);
+      showStatus(sessionDetails.message);
     } catch (err) {
       showStatus(err.message, true);
     } finally {
