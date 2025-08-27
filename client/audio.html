@@ -40,9 +40,13 @@
     showStatus(`${audioPlayers.length} audio files loaded`);
   }
   
-      // // If array, play first chunk (extend to play all sequentially later)
-      // const chunk = Array.isArray(audioChunks) ? audioChunks[0] : audioChunks;
+  function blockAudioUI() {
+  document.getElementById("audioLoadingOverlay").style.display = "flex";
+}
 
+function unblockAudioUI() {
+  document.getElementById("audioLoadingOverlay").style.display = "none";
+}
 
   function pausePlayChunks() {
 

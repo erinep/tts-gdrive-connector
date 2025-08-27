@@ -29,6 +29,9 @@
       Your browser does not support the audio element.
     </audio> -->
     <div class="audio-player-wrapper">
+      <div class="audio-loading-overlay" id="audioLoadingOverlay">
+        <div class="spinner"></div>
+      </div>
       <div id="chunkControls" class="audio-buttons">
         <button id="prevChunkBtn" onClick="prevChunk()" class="audio-btn">⏮</button>
         <button id="PlayAllChunks" onClick="pausePlayChunks()" class="audio-btn">⏯</button>

@@ -46,12 +46,14 @@
   async function callTTS() {
     try {
       toggleBtnDisabled(true);
+      blockAudioUI();
 
       await setUserInputs();
       const packet = await fetchAudio();
       const audioChunks= packet.audioChunks;
 
       loadAudioChunks(audioChunks);
+      unblockAudioUI();
 
       showStatus("Storing audio...");
       const sessionDetails = await storeAudio(packet);
@@ -63,6 +65,7 @@
       showStatus(err.message, true);
     } finally {
       toggleBtnDisabled(false);
+      unblockAudioUI();
     }
   }
 

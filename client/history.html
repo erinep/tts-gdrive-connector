@@ -20,8 +20,10 @@
       button.classList.add("toolbar-btn");
       button.innerText = details.sessionId;
       button.onclick = async function () {
+        blockAudioUI();
         const audioChunks = await fetchSessionAudio(details.sessionId);
         loadAudioChunks(audioChunks);
+        unblockAudioUI();
       };
       div.appendChild(button);
 
