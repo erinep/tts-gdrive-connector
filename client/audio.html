@@ -13,8 +13,12 @@
       return;
     }
 
-    audioPlayers = []; // Reset audio players
-    activePlayerIndex = 0; // Reset active player index
+    // Reset audio players
+    if (activePlayerIndex) audioPlayers[activePlayerIndex].pause(); 
+    audioPlayers = []; 
+    activePlayerIndex = 0;
+
+    // Laod new audio
     audioPlayers = audioChunks.map(chunk => {
       const audio = new Audio(`data:${chunk.contentType};base64,${chunk.base64}`);
       audio._chunkText = chunk.text;
