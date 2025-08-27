@@ -115,6 +115,6 @@ function cleanAudioChunkMetadata(rawChunk) {
     filename: rawChunk.filename.stringValue,
     index: rawChunk.index.integerValue,
     bucket: rawChunk.bucket.stringValue,
-    text: rawChunk.bucket.stringValue,
+    text: rawChunk.text.stringValue,
   }
 }
