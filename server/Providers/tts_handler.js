@@ -64,7 +64,7 @@ function fetchAudio() {
       audioObject = g_callTextToSpeech(
         chunk.textValues.current,
         input.voice,
-        input.language,
+        input.locale,
         input.speed
       );
     } else if  (tts_server === "eleven_labs") {
