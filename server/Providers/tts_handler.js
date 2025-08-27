@@ -42,17 +42,17 @@ function fetchAudio() {
     throw new Error ("Service Provider " + tts_server + "not found");
   }
 
-  // Build text packets based on service
-  // Each packet will contain the text to be sent to TTS, along with any context
-  // needed for the TTS call (e.g., previous and next chunks for Eleven Labs)
-  let textChunks = buildTextChunks(tts_server, input.text);
-
-
+  // Split text into chunks before sending to the server
+  let textChunks = buildTextChunks(input.text);
+  
+  
   Logger.log("recieved input details from UI %s ", input);
   Logger.log("tts text to send %s", textChunks);
   let audioChunks = [];
-
+  
   // Call TTS for each chunk and collect audio
+  // Each packet will contain the text to be sent to TTS, along with any context
+  // needed for the TTS call (e.g., previous and next chunks for Eleven Labs)
   for (let chunk of textChunks) {
 
     Logger.log("Sending chunk index:%s Text:%s", chunk.index, chunk.textValues.current );
