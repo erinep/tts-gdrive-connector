@@ -126,21 +126,6 @@
     });
   }
 
-  function updateHistoryUI(details) {
-    const div = document.getElementById("histDiv");
-    const anchor = document.createElement("a");
-    anchor.classList.add("historyLink");
-    anchor.target = "_blank";
-    anchor.href = details.file_url;
-    anchor.innerText = details.file_name;
-    div.appendChild(anchor);
-  }
-
-  function addToCue() {
-    showStatus("Not Implemented", true);
-    return;
-  }
-
   function showStatus(msg, isError) {
     const el = document.getElementById('statusText');
     el.textContent = msg || "";
