@@ -50,29 +50,29 @@ function fetchAudio() {
   Logger.log("tts text to send %s", textChunks);
   let audioChunks = [];
   
+  try {
   // Call TTS for each chunk and collect audio
   // Each packet will contain the text to be sent to TTS, along with any context
   // needed for the TTS call (e.g., previous and next chunks for Eleven Labs)
   for (let chunk of textChunks) {
+      Logger.log("Sending chunk index:%s Text:%s", chunk.index, chunk.textValues.current );
 
-    Logger.log("Sending chunk index:%s Text:%s", chunk.index, chunk.textValues.current );
+      let audioObject = null;
 
-    let audioObject = null;
+      if (tts_server === "google-tts"){
 
-    if (tts_server === "google-tts"){
-
-      audioObject = g_callTextToSpeech(
-        chunk.textValues.current,
-        input.voice,
-        input.locale,
-        input.speed
-      );
-    } else if  (tts_server === "eleven_labs") {
-      audioObject = el_callTextToSpeech(
-        chunk.textValues,
-        input.voice
-      )
-    }
+        audioObject = g_callTextToSpeech(
+          chunk.textValues.current,
+          input.voice,
+          input.locale,
+          input.speed
+        );
+      } else if  (tts_server === "eleven_labs") {
+        audioObject = el_callTextToSpeech(
+          chunk.textValues,
+          input.voice
+        )
+      }
 
     audioChunks.push({
       index: chunk.index,
@@ -81,7 +81,10 @@ function fetchAudio() {
       contentType: audioObject.contentType,
     })
   } 
-
+  } catch (err) {
+    // Log error in fetch. Return the rest of the audio chunks.
+    Logger.log(err.message)
+  }
 
 
   Logger.log("Returned %s audio chunks, ", audioChunks.length);
