@@ -13,7 +13,8 @@ function getDocFileName() {
 function setInputData(inputs){
   PropertiesService.getUserProperties().setProperties(
     {
-      voice: inputs.voice || '',
+      voiceId: inputs.voiceId || '',
+      voiceName: inputs.voiceName || '',
       locale: inputs.locale || '',
       speed: inputs.speed || '',
       text: inputs.text || ''}
@@ -23,7 +24,8 @@ function setInputData(inputs){
 function getInputData(){
   const props = PropertiesService.getUserProperties().getProperties();
   return {
-    voice: props.voice || '',
+    voiceId: props.voiceId || '',
+    voiceName: props.voiceName || '',
     locale: props.locale || '',
     speed: props.speed || '',
     text: props.text || ''

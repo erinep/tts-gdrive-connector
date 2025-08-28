@@ -15,7 +15,8 @@ function setCurrentService(value) {
  * @typedef {Object} AudioChunksSession
  * @property {string} sessionId - Unique ID for the session.
  * @property {string} provider - TTS provider (e.g., "google-tts", "eleven_labs").
- * @property {string} voice - Voice ID used for the session.
+ * @property {string} voiceId - Voice ID used for the session.
+ * @property {string} voiceName - Common name for the voice
  * @property {string} gdoc_details - Source Google Doc name or ID.
  * @property {number} audioChunkCount - Total number of audio chunks.
  * @property {AudioChunk[]} audioChunks - Array of audio chunk objects.
@@ -36,7 +37,7 @@ function fetchAudio() {
   // Basic validations on input
   if (!apiKey) throw new Error ("API key missing");  
   if (!input.text|| input.text === '(No text selected)') throw new Error ("No Text selected");
-  if (!input.voice) throw new Error ("No Voice Selected");
+  if (!input.voiceId) throw new Error ("No Voice Selected");
   if (input.text.length > 5000) throw new Error ("Text too long");
   if (tts_server !== "google-tts" && tts_server !== "eleven_labs"){
     throw new Error ("Service Provider " + tts_server + "not found");
@@ -63,14 +64,14 @@ function fetchAudio() {
 
         audioObject = g_callTextToSpeech(
           chunk.textValues.current,
-          input.voice,
+          input.voiceId,
           input.locale,
           input.speed
         );
       } else if  (tts_server === "eleven_labs") {
         audioObject = el_callTextToSpeech(
           chunk.textValues,
-          input.voice
+          input.voiceId
         )
       }
 
@@ -91,7 +92,8 @@ function fetchAudio() {
   return {
     sessionId:  createSessionID(),
     provider: tts_server,
-    voice: input.voice,
+    voiceId: input.voiceId,
+    voiceName: input.voiceName,
     gdoc_details: getDocFileName(),
     audioChunkCount: audioChunks.length,
     audioChunks: audioChunks

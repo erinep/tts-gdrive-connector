@@ -2,7 +2,8 @@
 /**
  * @typedef {Object} SessionMetadata
  * @property {string} sessionId
- * @property {string} voice
+ * @property {string} voiceId
+ * @property {string} voiceName
  * @property {string} provider
  * @property {string} gdoc_details
  * @property {number} audioChunkCount
@@ -10,14 +11,15 @@
  * @param {SessionMetadata} metadata
  * @return
 */
-function writeSessionToFirestore({ sessionId, voice, provider, gdoc_details, audioChunkCount }) {
+function writeSessionToFirestore({ sessionId, voiceId, voiceName, provider, gdoc_details, audioChunkCount }) {
   const token = getAccessTokenFromServiceAccount();
   const projectId = PropertiesService.getScriptProperties().getProperty("PROJECT_ID");
   const url = `https://firestore.googleapis.com/v1/projects/${projectId}/databases/(default)/documents/sessions/${sessionId}`;
 
   const payload = {
     fields: {
-      voice: { stringValue: voice },
+      voiceId: { stringValue: voiceId },
+      voiceName: { stringValue: voiceName},
       provider: { stringValue: provider },
       gdoc_details: { stringValue: gdoc_details },
       totalChunks: { integerValue: audioChunkCount.toString() },

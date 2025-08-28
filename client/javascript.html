@@ -84,9 +84,14 @@
   }
 
   function getUserInputsFromDOM() {
+    let voiceList = document.getElementById("voiceList");
+    let voiceId = voiceList.value;
+    let voiceName = voiceList[voiceList.selectedIndex].text
+
     return {
       text: document.getElementById("selectedBox").innerText,
-      voice: document.getElementById("voiceList").value,
+      voiceId: voiceId,
+      voiceName: voiceName,
       locale: document.getElementById("accent")?.value,
       speed: document.getElementById("readingSpeedInput")?.value
     };

@@ -14,7 +14,8 @@ function audioStorageHandler( data, SERVICE_FOR_STORAGE) {
 
     writeSessionToFirestore({
       sessionId: data.sessionId,
-      voice: data.voice,
+      voiceId: data.voiceId,
+      voiceName: data.voiceName,
       provider: data.provider,
       gdoc_details: data.gdoc_details,
       audioChunkCount: data.audioChunkCount,
@@ -47,6 +48,7 @@ function audioStorageHandler( data, SERVICE_FOR_STORAGE) {
 
 function getSession(sessionId){
   const chunks = getFirestoreChunks(sessionId)
+  Logger.log(chunks);
   const audio = []
   for (let chunk of chunks) {
     audio.push({
