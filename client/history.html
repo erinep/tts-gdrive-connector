@@ -16,9 +16,13 @@
 
     } else if (buttons){
 
+      // Set Text for the button
+      voice = details.voiceName.replace(/ /g, "_").replace(/-/g, "");
+      const buttonText = `${voice.substring(0,7)}_${details.sessionId.substring(17,22)}`;
+      
       const button = document.createElement("button");
-      button.classList.add("toolbar-btn");
-      button.innerText = details.sessionId;
+      button.classList.add("hist-btn");
+      button.innerText = buttonText;
       button.onclick = async function () {
         blockAudioUI();
         const audioChunks = await fetchSessionAudio(details.sessionId);
@@ -34,7 +38,6 @@
     return new Promise ((resolve, reject) => {
       google.script.run
         .withSuccessHandler(d => {
-          showStatus(d.message);
           resolve(d);
         }).withFailureHandler(e => {
 

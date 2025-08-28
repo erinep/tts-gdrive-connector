@@ -58,7 +58,7 @@
       showStatus("Storing audio...");
       const sessionDetails = await storeAudio(packet);
 
-      updateHistoryUI(sessionDetails);
+      updateHistoryUI({...sessionDetails, voiceName: packet.voiceName});
 
       showStatus(sessionDetails.message);
     } catch (err) {

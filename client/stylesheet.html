@@ -220,12 +220,11 @@ summary {
   flex-wrap: nowrap;
 }
 
+.hist-btn,
 .toolbar-btn {
-  width: fit-content;
   background: none;
   color: #222;
   font-weight: 500;
-  border: none;
   border-radius: 3px;
   padding: 0 8px;
   cursor: pointer;
@@ -237,9 +236,14 @@ summary {
   display: inline-block;
 }
 
+.toolbar-btn{
+  width: fit-content;
+  border: none;
+}
+
 .toolbar-btn:hover,
-.toolbar-btn:focus-visible,
-.toolbar-btn:active{
+.hist-btn:hover
+{
   background: #e0e0e0;
 }
 
@@ -267,7 +271,6 @@ summary {
 .btn:disabled {
   background: #bdbdbd;
   color: #eee;
-  cursor: not-allowed;
   opacity: 0.7;
 }
 

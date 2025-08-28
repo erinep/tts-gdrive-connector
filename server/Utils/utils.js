@@ -25,7 +25,9 @@ function toBase64Obj(blob) {
 }
 
 function getTimeString() {
-  return new Date().toISOString().slice(2,19).replace(/T/g,'_');
+  let now = new Date();
+  let timezone = Session.getScriptTimeZone();
+  return Utilities.formatDate(now, timezone, "yy-MM-dd_HH:mm:ss");
 }
 
 function createSessionID(){
