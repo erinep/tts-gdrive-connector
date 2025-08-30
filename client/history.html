@@ -1,5 +1,12 @@
 <script>
 
+  document.getElementById("session-id-input").addEventListener("keydown", (event) =>{
+    if (event.key === 'Enter') {
+      searchHistory();
+    }
+  });
+
+
   function updateHistoryUI(details) {
     const div = document.getElementById("histDiv");
 
@@ -23,15 +30,37 @@
       const button = document.createElement("button");
       button.classList.add("hist-btn");
       button.innerText = buttonText;
-      button.onclick = async function () {
-        blockAudioUI();
-        const audioChunks = await fetchSessionAudio(details.sessionId);
-        loadAudioChunks(audioChunks);
-        unblockAudioUI();
-      };
+      button.onclick = () => loadHistory(details.sessionId);
       div.appendChild(button);
 
     }
+  }
+
+  function sanitizeId(id) {
+    //session id must of format 'session_YY-MM-DD_HH:MM:ss'
+    if (typeof id !== 'string' || !/^session_\d{2}-\d{2}-\d{2}_\d{2}:\d{2}:\d{2}$/.test(id)) {
+      throw new Error('Invalid ID format: Only letters, numbers, - and _ are allowed.');
+    }
+    return id;
+  }
+
+  function searchHistory() {
+    const search = document.getElementById("session-id-input").value.trim();
+    loadHistory(search);
+  }
+
+  async function loadHistory (id){
+
+    if (!id) throw new Error('Session ID is required');
+    sanitizeId(id);
+    blockAudioUI();
+    fetchSessionAudio(id).then( audioChunks => {
+      loadAudioChunks(audioChunks);
+      unblockAudioUI();
+    }).catch(e => {
+      showStatus(e.message, true);
+      unblockAudioUI();
+    })
   }
 
   function fetchSessionAudio (id) {
