@@ -24,8 +24,11 @@
     } else if (buttons){
 
       // Set Text for the button
-      voice = details.voiceName.replace(/ /g, "_").replace(/-/g, "");
-      const buttonText = `${voice.substring(0,7)}_${details.sessionId.substring(17,22)}`;
+      let buttonText = details?.buttonText;
+      if (!buttonText) {
+        voice = details.voiceName.replace(/ /g, "_").replace(/-/g, "");
+        buttonText = `${voice.substring(0,7)}_${details.sessionId.substring(17,22)}`;
+      }
       
       const button = document.createElement("button");
       button.classList.add("hist-btn");
@@ -75,6 +78,27 @@
         
         }).getSession(id);
     })
+  }
+
+  function restoreNamedSession() {
+    return new Promise ((resolve, reject) => {
+      google.script.run
+      .withSuccessHandler(sessions => {
+
+        sessions.forEach(s => {
+          updateHistoryUI({
+            sessionId : s.sessionId,
+            buttonText: s.chapter_name,
+          })
+        })
+        resolve();
+
+      }).withFailureHandler(e => {
+
+        showStatus(e.message, true);
+        reject(new Error(e.message));
+      }).getFirestoreSession_Chapter_Names();
+    });
   }
 
 </script>

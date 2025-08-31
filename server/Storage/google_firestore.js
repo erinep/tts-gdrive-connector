@@ -7,6 +7,7 @@
  * @property {string} provider
  * @property {string} gdoc_details
  * @property {number} audioChunkCount
+ * @property {string} [chapter_name]
  *
  * @param {SessionMetadata} metadata
  * @return
@@ -119,4 +120,43 @@ function cleanAudioChunkMetadata(rawChunk) {
     bucket: rawChunk.bucket.stringValue,
     text: rawChunk.text.stringValue,
   }
+}
+
+/**
+ * @returns {SessionMetadata[]} - return all sessions with chapter_name fields
+ */
+function getFirestoreSession_Chapter_Names() {
+  const projectId = PropertiesService.getScriptProperties().getProperty("PROJECT_ID");
+  const accessToken = getAccessTokenFromServiceAccount();
+  
+  const url = `https://firestore.googleapis.com/v1/projects/${projectId}/databases/(default)/documents/sessions/`;
+  
+  const options = {
+    method: 'get',
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+    muteHttpExceptions: true,
+  };
+  
+  const response = UrlFetchApp.fetch(url, options);
+  const statusCode = response.getResponseCode();
+  
+if (statusCode !== 200) {
+  throw new Error(`message: ${response.getContentText()}`);
+}
+
+const json = JSON.parse(response.getContentText());
+
+if (!json.documents) {
+  throw new Error(`No documents found in sessions`);
+}
+
+return json.documents
+  .filter(doc => doc.fields?.chapter_name?.stringValue)
+  .map(doc => ({
+    sessionId: doc.name.split('/').pop(),
+    chapter_name: doc.fields.chapter_name.stringValue
+  }));
+
 }

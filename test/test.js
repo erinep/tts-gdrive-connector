@@ -61,6 +61,10 @@ function testWriteChunkToFirestore() {
   writeChunkToFirestore(testChunkData1);
 }
 
+function testGetFirestoreSession_Chapter_Names() {
+  Logger.log(getFirestoreSession_Chapter_Names());
+}
+
 
 function testGetSession() {
   const audio = getSession("TEST");
