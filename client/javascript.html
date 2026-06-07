@@ -60,7 +60,10 @@
 
       updateHistoryUI({...sessionDetails, voiceName: packet.voiceName});
 
-      showStatus(sessionDetails.message);
+      const message = packet.error
+        ? `${sessionDetails.message} (Warning: ${packet.error})`
+        : sessionDetails.message;
+      showStatus(message, !!packet.error);
     } catch (err) {
       showStatus(err.message, true);
     } finally {
