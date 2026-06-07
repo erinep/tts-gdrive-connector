@@ -47,15 +47,16 @@ function fetchAudio() {
   let textChunks = buildTextChunks(input.text);
   
   
-  Logger.log("recieved input details from UI %s ", input);
+  Logger.log("received input details from UI %s ", input);
   Logger.log("tts text to send %s", textChunks);
   let audioChunks = [];
-  
-  try {
+  let fetchError = null;
+
   // Call TTS for each chunk and collect audio
   // Each packet will contain the text to be sent to TTS, along with any context
   // needed for the TTS call (e.g., previous and next chunks for Eleven Labs)
   for (let chunk of textChunks) {
+    try {
       Logger.log("Sending chunk index:%s Text:%s", chunk.index, chunk.textValues.current );
 
       let audioObject = null;
@@ -75,18 +76,19 @@ function fetchAudio() {
         )
       }
 
-    audioChunks.push({
-      index: chunk.index,
-      text: chunk.textValues.current,
-      base64: audioObject.base64,
-      contentType: audioObject.contentType,
-    })
-  } 
-  } catch (err) {
-    // Log error in fetch. Return the rest of the audio chunks.
-    Logger.log(err.message)
+      audioChunks.push({
+        index: chunk.index,
+        text: chunk.textValues.current,
+        base64: audioObject.base64,
+        contentType: audioObject.contentType,
+      })
+    } catch (err) {
+      // Stop fetching further chunks, but surface the error and keep what succeeded so far.
+      Logger.log(err.message)
+      fetchError = `Failed at chunk ${chunk.index}: ${err.message}`;
+      break;
+    }
   }
-
 
   Logger.log("Returned %s audio chunks, ", audioChunks.length);
   return {
@@ -96,7 +98,8 @@ function fetchAudio() {
     voiceName: input.voiceName,
     gdoc_details: getDocFileName(),
     audioChunkCount: audioChunks.length,
-    audioChunks: audioChunks
+    audioChunks: audioChunks,
+    error: fetchError
   }
 }
 
